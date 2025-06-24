@@ -1,1 +1,315 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#about" class="nav-link active" data-route="about">About Me</a>
+            <a href="#blog" class="nav-link" data-route="blog">Blog</a>
+            <a href="#resume" class="nav-link" data-route="resume">Resume</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- About Me Section -->
+        <section id="about-section" class="section active">
+            <div class="container">
+                <div class="hero">
+                    <h1 class="hero-title">Hello, I'm [Your Name]</h1>
+                    <p class="hero-description">
+                        A passionate software developer focused on creating elegant solutions to complex problems. 
+                        I specialize in full-stack development with a keen eye for user experience and clean, 
+                        maintainable code. Always learning, always building.
+                    </p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-column">
+                        <h2 class="column-title">Current Projects</h2>
+                        <div class="projects-list">
+                            <div class="project-card">
+                                <h3 class="project-name">E-Commerce Platform</h3>
+                                <p class="project-description">
+                                    A modern, responsive e-commerce platform built with React and Node.js, 
+                                    featuring real-time inventory management and secure payment processing.
+                                </p>
+                                <div class="project-buttons">
+                                    <a href="#" class="btn btn-primary">
+                                        <i data-feather="github"></i>
+                                        GitHub
+                                    </a>
+                                    <a href="#blog" class="btn btn-secondary" data-route="blog">
+                                        <i data-feather="edit"></i>
+                                        Blog
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="project-card">
+                                <h3 class="project-name">Task Management App</h3>
+                                <p class="project-description">
+                                    A collaborative task management application with real-time updates, 
+                                    drag-and-drop functionality, and team collaboration features.
+                                </p>
+                                <div class="project-buttons">
+                                    <a href="#" class="btn btn-primary">
+                                        <i data-feather="github"></i>
+                                        GitHub
+                                    </a>
+                                    <a href="#blog" class="btn btn-secondary" data-route="blog">
+                                        <i data-feather="edit"></i>
+                                        Blog
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="project-card">
+                                <h3 class="project-name">Data Visualization Tool</h3>
+                                <p class="project-description">
+                                    An interactive data visualization dashboard that transforms complex datasets 
+                                    into intuitive charts and graphs using D3.js and modern web technologies.
+                                </p>
+                                <div class="project-buttons">
+                                    <a href="#" class="btn btn-primary">
+                                        <i data-feather="github"></i>
+                                        GitHub
+                                    </a>
+                                    <a href="#blog" class="btn btn-secondary" data-route="blog">
+                                        <i data-feather="edit"></i>
+                                        Blog
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-column">
+                        <h2 class="column-title">Current Goals</h2>
+                        <div class="goals-list">
+                            <div class="goal-item">
+                                <h3 class="goal-title">Master Cloud Architecture</h3>
+                                <p class="goal-description">
+                                    Deepening my understanding of AWS and containerization technologies 
+                                    to build scalable, distributed systems.
+                                </p>
+                            </div>
+
+                            <div class="goal-item">
+                                <h3 class="goal-title">Contribute to Open Source</h3>
+                                <p class="goal-description">
+                                    Actively contributing to open-source projects and maintaining 
+                                    my own libraries to give back to the developer community.
+                                </p>
+                            </div>
+
+                            <div class="goal-item">
+                                <h3 class="goal-title">Learn Machine Learning</h3>
+                                <p class="goal-description">
+                                    Exploring machine learning and AI to integrate intelligent 
+                                    features into web applications and solve complex problems.
+                                </p>
+                            </div>
+
+                            <div class="goal-item">
+                                <h3 class="goal-title">Mentor Others</h3>
+                                <p class="goal-description">
+                                    Sharing knowledge through mentoring junior developers and 
+                                    creating educational content to help others grow in their careers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog-section" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1 class="section-title">Blog</h1>
+                    <p class="section-subtitle">Thoughts on development, technology, and life</p>
+                </div>
+
+                <div class="blog-posts" id="blog-posts">
+                    <!-- Blog posts will be loaded here by JavaScript -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be added here if needed -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Section -->
+        <section id="resume-section" class="section">
+            <div class="container">
+                <div class="resume-header">
+                    <h1 class="section-title">Resume</h1>
+                    <div class="resume-actions">
+                        <button class="btn btn-primary" onclick="window.print()">
+                            <i data-feather="printer"></i>
+                            Print
+                        </button>
+                        <a href="assets/resume.pdf" class="btn btn-secondary" download>
+                            <i data-feather="download"></i>
+                            Download PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resume-content">
+                    <div class="resume-section">
+                        <div class="contact-info">
+                            <h2 class="resume-name">[Your Full Name]</h2>
+                            <div class="contact-details">
+                                <p><i data-feather="mail"></i> your.email@example.com</p>
+                                <p><i data-feather="phone"></i> +1 (555) 123-4567</p>
+                                <p><i data-feather="map-pin"></i> Your City, State</p>
+                                <p><i data-feather="linkedin"></i> linkedin.com/in/yourprofile</p>
+                                <p><i data-feather="github"></i> github.com/yourusername</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3 class="resume-section-title">Professional Summary</h3>
+                        <p class="resume-summary">
+                            Experienced Full-Stack Developer with 5+ years of expertise in modern web technologies, 
+                            cloud architecture, and agile development methodologies. Proven track record of delivering 
+                            scalable applications and leading cross-functional teams to achieve business objectives. 
+                            Passionate about clean code, user experience, and continuous learning.
+                        </p>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3 class="resume-section-title">Professional Experience</h3>
+                        
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <h4 class="job-title">Senior Full-Stack Developer</h4>
+                                <span class="job-duration">2021 - Present</span>
+                            </div>
+                            <p class="company-name">Tech Innovation Corp</p>
+                            <ul class="job-responsibilities">
+                                <li>Led development of microservices architecture serving 100k+ daily active users</li>
+                                <li>Implemented CI/CD pipelines reducing deployment time by 60%</li>
+                                <li>Mentored junior developers and conducted code reviews</li>
+                                <li>Collaborated with product teams to define technical requirements</li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <h4 class="job-title">Full-Stack Developer</h4>
+                                <span class="job-duration">2019 - 2021</span>
+                            </div>
+                            <p class="company-name">Digital Solutions LLC</p>
+                            <ul class="job-responsibilities">
+                                <li>Developed responsive web applications using React, Node.js, and PostgreSQL</li>
+                                <li>Optimized database queries improving application performance by 40%</li>
+                                <li>Integrated third-party APIs and payment processing systems</li>
+                                <li>Participated in agile development processes and sprint planning</li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <h4 class="job-title">Frontend Developer</h4>
+                                <span class="job-duration">2018 - 2019</span>
+                            </div>
+                            <p class="company-name">StartupXYZ</p>
+                            <ul class="job-responsibilities">
+                                <li>Built user interfaces for web and mobile applications</li>
+                                <li>Collaborated with designers to implement pixel-perfect designs</li>
+                                <li>Implemented responsive design principles for cross-device compatibility</li>
+                                <li>Contributed to the company's design system and component library</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3 class="resume-section-title">Education</h3>
+                        
+                        <div class="education-item">
+                            <div class="education-header">
+                                <h4 class="degree-title">Bachelor of Science in Computer Science</h4>
+                                <span class="graduation-year">2018</span>
+                            </div>
+                            <p class="school-name">University of Technology</p>
+                            <p class="education-details">Graduated Magna Cum Laude, GPA: 3.8/4.0</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3 class="resume-section-title">Technical Skills</h3>
+                        
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h4 class="skill-category-title">Frontend</h4>
+                                <div class="skills-list">
+                                    <span class="skill-tag">JavaScript</span>
+                                    <span class="skill-tag">TypeScript</span>
+                                    <span class="skill-tag">React</span>
+                                    <span class="skill-tag">Vue.js</span>
+                                    <span class="skill-tag">HTML5</span>
+                                    <span class="skill-tag">CSS3</span>
+                                    <span class="skill-tag">Sass</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h4 class="skill-category-title">Backend</h4>
+                                <div class="skills-list">
+                                    <span class="skill-tag">Node.js</span>
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">Express.js</span>
+                                    <span class="skill-tag">Django</span>
+                                    <span class="skill-tag">REST APIs</span>
+                                    <span class="skill-tag">GraphQL</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h4 class="skill-category-title">Database</h4>
+                                <div class="skills-list">
+                                    <span class="skill-tag">PostgreSQL</span>
+                                    <span class="skill-tag">MongoDB</span>
+                                    <span class="skill-tag">Redis</span>
+                                    <span class="skill-tag">MySQL</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h4 class="skill-category-title">DevOps & Tools</h4>
+                                <div class="skills-list">
+                                    <span class="skill-tag">AWS</span>
+                                    <span class="skill-tag">Docker</span>
+                                    <span class="skill-tag">Git</span>
+                                    <span class="skill-tag">CI/CD</span>
+                                    <span class="skill-tag">Linux</span>
+                                    <span class="skill-tag">Kubernetes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
