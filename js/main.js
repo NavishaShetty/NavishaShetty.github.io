@@ -5,6 +5,8 @@ class PortfolioApp {
         this.blogPosts = [];
         this.currentPage = 1;
         this.postsPerPage = 5;
+        this.currentBlogPost = null;
+        this.viewingBlogPost = false;
         
         this.init();
     }
@@ -42,6 +44,11 @@ class PortfolioApp {
             }
         });
 
+        // Back to blog button
+        document.getElementById('back-to-blog').addEventListener('click', () => {
+            this.showBlogList();
+        });
+
         // Print functionality
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
@@ -57,7 +64,15 @@ class PortfolioApp {
         const hash = window.location.hash.substring(1);
         const validRoutes = ['about', 'blog', 'resume'];
         
-        if (hash && validRoutes.includes(hash)) {
+        // Check if it's a blog post route (blog/post-id)
+        if (hash.startsWith('blog/')) {
+            const postId = hash.substring(5);
+            this.navigateTo('blog', false);
+            // Wait a bit longer to ensure blog posts are loaded
+            setTimeout(() => {
+                this.openBlogPost(postId);
+            }, 500);
+        } else if (hash && validRoutes.includes(hash)) {
             this.navigateTo(hash, false);
         } else {
             this.navigateTo('about', false);
@@ -65,7 +80,13 @@ class PortfolioApp {
     }
 
     navigateTo(route, updateHistory = true) {
-        if (route === this.currentRoute) return;
+        if (route === this.currentRoute && !this.viewingBlogPost) return;
+
+        // Reset blog post view when navigating to different sections
+        if (route !== 'blog') {
+            this.viewingBlogPost = false;
+            this.currentBlogPost = null;
+        }
 
         // Update URL
         if (updateHistory) {
@@ -81,14 +102,31 @@ class PortfolioApp {
         this.currentRoute = route;
 
         // Load content if needed
-        if (route === 'blog' && this.blogPosts.length === 0) {
-            this.loadBlogPosts();
+        if (route === 'blog') {
+            if (this.blogPosts.length === 0) {
+                this.loadBlogPosts();
+            } else {
+                this.showBlogList();
+            }
         }
     }
 
     handleRouteChange() {
         const hash = window.location.hash.substring(1) || 'about';
-        this.navigateTo(hash, false);
+        
+        // Check if it's a blog post route
+        if (hash.startsWith('blog/')) {
+            const postId = hash.substring(5);
+            if (this.currentRoute !== 'blog') {
+                this.navigateTo('blog', false);
+            }
+            // Wait a bit longer to ensure blog posts are loaded
+            setTimeout(() => {
+                this.openBlogPost(postId);
+            }, 500);
+        } else {
+            this.navigateTo(hash, false);
+        }
     }
 
     updateNavigation(activeRoute) {
@@ -131,10 +169,13 @@ class PortfolioApp {
             }
             
             this.blogPosts = await response.json();
+            console.log('Blog posts loaded:', this.blogPosts.length);
             this.renderBlogPosts();
+            return Promise.resolve();
         } catch (error) {
             console.error('Error loading blog posts:', error);
             this.renderBlogError();
+            return Promise.reject(error);
         }
     }
 
@@ -152,7 +193,7 @@ class PortfolioApp {
         const postsToShow = this.blogPosts.slice(startIndex, endIndex);
 
         const blogHTML = postsToShow.map(post => `
-            <article class="blog-post" onclick="this.openBlogPost('${post.id}')">
+            <article class="blog-post" onclick="portfolioApp.openBlogPost('${post.id}')">
                 <h2 class="blog-post-title">${this.escapeHtml(post.title)}</h2>
                 <div class="blog-post-meta">
                     <span>Published on ${this.formatDate(post.date)}</span>
@@ -242,12 +283,196 @@ class PortfolioApp {
     }
 
     openBlogPost(postId) {
-        // This would typically open a detailed view of the blog post
-        // For now, we'll just show an alert
-        const post = this.blogPosts.find(p => p.id === postId);
-        if (post) {
-            alert(`This would open the full blog post: "${post.title}"`);
+        // If blog posts haven't been loaded yet, load them first
+        if (this.blogPosts.length === 0) {
+            this.loadBlogPosts().then(() => {
+                this.openBlogPost(postId);
+            });
+            return;
         }
+
+        const post = this.blogPosts.find(p => p.id === postId);
+        if (!post) {
+            console.error('Blog post not found:', postId);
+            console.log('Available posts:', this.blogPosts.map(p => p.id));
+            return;
+        }
+
+        // Update URL to include blog post
+        history.pushState({ route: 'blog', postId }, '', `#blog/${postId}`);
+
+        this.currentBlogPost = post;
+        this.viewingBlogPost = true;
+
+        // Hide blog list view
+        document.getElementById('blog-list-view').style.display = 'none';
+        
+        // Show blog post view
+        const blogPostView = document.getElementById('blog-post-view');
+        blogPostView.style.display = 'block';
+
+        // Populate blog post content
+        document.getElementById('blog-post-title').textContent = post.title;
+        document.getElementById('blog-post-meta').innerHTML = `
+            <span>Published on ${this.formatDate(post.date)}</span>
+            ${post.author ? `<span> • By ${this.escapeHtml(post.author)}</span>` : ''}
+        `;
+        
+        // Render tags
+        const tagsContainer = document.getElementById('blog-post-tags');
+        if (post.tags && post.tags.length > 0) {
+            tagsContainer.innerHTML = post.tags.map(tag => 
+                `<span class="blog-tag">${this.escapeHtml(tag)}</span>`
+            ).join('');
+        } else {
+            tagsContainer.innerHTML = '';
+        }
+
+        // Render content
+        document.getElementById('blog-post-content').innerHTML = this.renderBlogPostContent(post);
+
+        // Re-initialize Feather icons for the new content
+        this.initializeFeatherIcons();
+
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    showBlogList() {
+        this.viewingBlogPost = false;
+        this.currentBlogPost = null;
+        
+        // Update URL
+        history.pushState({ route: 'blog' }, '', '#blog');
+
+        // Show blog list view
+        document.getElementById('blog-list-view').style.display = 'block';
+        
+        // Hide blog post view
+        document.getElementById('blog-post-view').style.display = 'none';
+
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    renderBlogPostContent(post) {
+        // Special content for BESS Coding Agent post
+        if (post.id === 'bess-coding-agent-journey') {
+            return `
+                <div class="blog-content">
+                    <h2>The Journey Begins</h2>
+                    <p>Just wrapped up the DeepLearning.ai "Building & Evaluating AI Agents" course, and I'm excited to share what I learned by building something real.</p>
+                    
+                    <p>Agents feel like the next inflection point: they don't just answer questions, they use tools to get real work done. After the course, I pointed that power at something from my day-job—battery energy storage trading—and the result is <strong>BESS-Coding-Agent</strong>.</p>
+
+                    <h2>What It Does</h2>
+                    <p>The BESS Coding Agent is designed to solve real-world problems in energy trading:</p>
+                    
+                    <ul>
+                        <li><strong>Connects to Modo Energy's Day-Ahead-Market API</strong> for real-time energy pricing data</li>
+                        <li><strong>Uses SmolAgents LLM + custom tools</strong> to analyze energy prices and market conditions</li>
+                        <li><strong>Provides actionable insights</strong> telling storage owners exactly when to charge, when to discharge, and what the cycle profit looks like</li>
+                        <li><strong>Chat UI interface</strong> for natural language interaction with complex energy data</li>
+                        <li><strong>Phoenix dashboard integration</strong> streams every tool call and model decision for easy debugging</li>
+                    </ul>
+
+                    <h2>Technical Implementation</h2>
+                    <p>Building this agent involved several key technical decisions:</p>
+                    
+                    <h3>SmolAgents Framework</h3>
+                    <p>I chose SmolAgents for its lightweight approach to building LLM-powered agents. It provided the perfect balance between functionality and simplicity for this project.</p>
+
+                    <h3>Custom Tool Development</h3>
+                    <p>Created specialized tools for:</p>
+                    <ul>
+                        <li>API integration with Modo Energy's pricing feeds</li>
+                        <li>Battery optimization calculations</li>
+                        <li>Profit analysis and reporting</li>
+                        <li>Market condition assessment</li>
+                    </ul>
+
+                    <h3>Observability with Phoenix</h3>
+                    <p>Integrated Phoenix tracing to monitor every decision the agent makes. This transparency is crucial when dealing with financial trading decisions.</p>
+
+                    <blockquote>
+                        "Conversational chatbots were just the beginning; agents turn 'nice answers' into actions."
+                    </blockquote>
+
+                    <h2>Why I'm Excited</h2>
+                    <p>After seeing this work on a real dataset, I'm re-thinking how AI can slot into every workflow I touch. The ability to have natural conversations about complex energy market data and get actionable trading recommendations feels transformative.</p>
+
+                    <p>This project demonstrates that agents aren't just fancy chatbots—they're tools that can understand context, use specialized tools, and provide real business value.</p>
+
+                    <h2>Key Learnings</h2>
+                    <ol>
+                        <li><strong>Tool Design Matters</strong>: The quality of your custom tools directly impacts agent performance</li>
+                        <li><strong>Observability is Critical</strong>: When dealing with financial data, you need to see every decision step</li>
+                        <li><strong>Domain Knowledge Integration</strong>: Combining LLM capabilities with industry-specific logic creates powerful solutions</li>
+                        <li><strong>User Experience Focus</strong>: A chat interface makes complex data accessible to non-technical users</li>
+                    </ol>
+
+                    <h2>What's Next</h2>
+                    <p>This feels like chapter 1 of something bigger. I'm keen to keep learning, ship more agent-powered helpers, and—hopefully—make software a lot more fun (and useful!) along the way.</p>
+
+                    <p>The intersection of AI agents and specialized domains like energy trading opens up endless possibilities. I'm excited to explore more applications and continue pushing the boundaries of what's possible.</p>
+
+                    <h3>Try It Yourself</h3>
+                    <p>If you're curious about the implementation details or want to experiment with the code, check out the <a href="https://github.com/NavishaShetty/BESS-Coding-Agent" target="_blank">GitHub repository</a>. I'd love to hear your thoughts or ideas for improvement!</p>
+                    
+                    <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
+                </div>
+            `;
+        }
+        
+        // Default content for other posts
+        return `
+            <div class="blog-content">
+                <h2>Introduction</h2>
+                <p>${this.escapeHtml(post.excerpt)}</p>
+                
+                <h2>Main Content</h2>
+                <p>This is where the full blog post content would appear. In a real application, you would:</p>
+                
+                <ul>
+                    <li>Store full content in separate markdown or HTML files</li>
+                    <li>Fetch the content via AJAX when a post is opened</li>
+                    <li>Use a content management system or static site generator</li>
+                    <li>Parse markdown to HTML for rich formatting</li>
+                </ul>
+
+                <blockquote>
+                    "${this.escapeHtml(post.excerpt)}"
+                </blockquote>
+
+                <h3>Key Points</h3>
+                <p>Here are some key takeaways from this post:</p>
+                
+                <ol>
+                    <li>Understanding the core concepts</li>
+                    <li>Practical implementation strategies</li>
+                    <li>Best practices and common pitfalls</li>
+                    <li>Future considerations and next steps</li>
+                </ol>
+
+                <h3>Code Example</h3>
+                <pre><code>// Example code snippet
+function exampleFunction() {
+    console.log('This is a sample code block');
+    return 'You can add syntax highlighting here';
+}</code></pre>
+
+                <h2>Conclusion</h2>
+                <p>Thank you for reading this blog post. In a real implementation, this content would be much more comprehensive and would include the actual article content, images, and interactive elements.</p>
+                
+                <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
+            </div>
+        `;
     }
 
     formatDate(dateString) {

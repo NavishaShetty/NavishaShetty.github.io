@@ -1,12 +1,21 @@
 [
     {
+        "id": "bess-coding-agent-journey",
+        "title": "Building BESS Coding Agent: From DeepLearning.ai Course to Real-World Energy Trading",
+        "date": "2025-06-24",
+        "excerpt": "Just wrapped up the DeepLearning.ai 'Building & Evaluating AI Agents' course and applied those learnings to create an intelligent coding agent for battery energy storage trading. Here's my journey from theory to practice.",
+        "content": "Full blog post content about the BESS Coding Agent project...",
+        "tags": ["AI agents", "energy trading", "LLM", "SmolAgents"],
+        "author": "Navisha Shetty"
+    },
+    {
         "id": "building-scalable-web-apps",
         "title": "Building Scalable Web Applications with Modern Architecture",
         "date": "2025-06-15",
         "excerpt": "Exploring the principles and patterns behind creating web applications that can grow with your business needs. From microservices to serverless architectures, learn how to build for scale from day one.",
         "content": "Full blog post content would go here...",
         "tags": ["web development", "architecture", "scalability"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "javascript-performance-optimization",
@@ -15,7 +24,7 @@
         "excerpt": "Discover practical techniques to optimize your JavaScript code for better performance. From bundle optimization to runtime performance improvements, make your web apps faster and more responsive.",
         "content": "Full blog post content would go here...",
         "tags": ["javascript", "performance", "optimization"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "css-grid-vs-flexbox",
@@ -24,7 +33,7 @@
         "excerpt": "A comprehensive guide to understanding the differences between CSS Grid and Flexbox. Learn when to use each layout method and how to combine them effectively for complex designs.",
         "content": "Full blog post content would go here...",
         "tags": ["css", "layout", "web design"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "react-hooks-deep-dive",
@@ -33,7 +42,7 @@
         "excerpt": "Understanding React Hooks beyond the basics. Explore custom hooks, performance considerations, and advanced patterns that will make you a more effective React developer.",
         "content": "Full blog post content would go here...",
         "tags": ["react", "hooks", "frontend"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "api-design-best-practices",
@@ -42,7 +51,7 @@
         "excerpt": "Learn how to design clean, intuitive APIs that developers love to use. Cover authentication, error handling, versioning, and documentation best practices.",
         "content": "Full blog post content would go here...",
         "tags": ["api", "backend", "rest"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "developer-productivity-tools",
@@ -51,7 +60,7 @@
         "excerpt": "A curated list of tools and techniques that can significantly boost your productivity as a developer. From code editors to automation scripts, discover what works best.",
         "content": "Full blog post content would go here...",
         "tags": ["productivity", "tools", "development"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "database-optimization-strategies",
@@ -60,7 +69,7 @@
         "excerpt": "Practical strategies for optimizing database performance in web applications. Learn about indexing, query optimization, caching strategies, and when to consider database scaling.",
         "content": "Full blog post content would go here...",
         "tags": ["database", "optimization", "performance"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     },
     {
         "id": "testing-strategies-javascript",
@@ -69,6 +78,6 @@
         "excerpt": "From unit tests to end-to-end testing, learn how to build a robust testing strategy for your JavaScript applications. Explore popular testing frameworks and best practices.",
         "content": "Full blog post content would go here...",
         "tags": ["testing", "javascript", "quality assurance"],
-        "author": "Your Name"
+        "author": "Navisha Shetty"
     }
 ]

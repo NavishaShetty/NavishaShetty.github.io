@@ -107,8 +107,20 @@ This is a static portfolio website built with vanilla HTML, CSS, and JavaScript.
 
 ## Changelog
 
-- June 23, 2025. Initial setup
+- June 24, 2025: Updated portfolio with Navisha Shetty's resume details, added BESS Coding Agent project, and created detailed blog post about the project
+- June 23, 2025: Initial setup with portfolio structure and blog functionality
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## Recent Updates
+
+- Enhanced About Me section with detailed background in MLOps, AI systems, and cloud-native technologies
+- Updated Current Goals to reflect focus on AI-integrated systems, DevOps/MLOps mastery, and open source contributions
+- Personalized all content with Navisha's actual resume information and career aspirations
+- Added real projects from GitHub including BESS Coding Agent
+- Created comprehensive blog post about the BESS Coding Agent journey
+- Updated skills section with relevant AI/ML and data engineering technologies
+- Integrated actual work experience from LG Energy Solution, TekSystems, and Pitney Bowes
+- Improved professional summary to highlight hands-on engineering background and open-source mindset
