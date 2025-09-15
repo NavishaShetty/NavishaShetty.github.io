@@ -7,5 +7,13 @@
         "content": "Full blog post content about the BESS Coding Agent project...",
         "tags": ["AI agents", "energy trading", "LLM", "SmolAgents"],
         "author": "Navisha Shetty"
-    }
+    },
+    {
+    "id": "flipped-interaction-pattern",
+    "title": "The Flipped Interaction Pattern: When AI Becomes the Interviewer",
+    "excerpt": "An educational guide exploring the Flipped Interaction Pattern in prompt engineering, featuring comprehensive examples, real-world applications, and interactive exercises to master AI conversation techniques.",
+    "date": "2025-09-15",
+    "author": "Navisha Shetty", 
+    "tags": ["AI", "Prompt Engineering", "Education", "Interactive", "NLP"]
+  }
 ]

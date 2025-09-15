@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Flipped Interaction Pattern - Navisha Shetty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #5a67d8;
+        }
+        
+        .content {
+            background: white;
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .content h2 {
+            color: #2d3748;
+            margin: 30px 0 20px 0;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .content h3 {
+            color: #4a5568;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+        
+        .content h4 {
+            color: #2d3748;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+        
+        .content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .content ul, .content ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        .content li {
+            margin-bottom: 8px;
+        }
+        
+        .example-box {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .tip-box {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .interactive-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .interactive-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .interactive-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .question {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .question h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .options li {
+            margin: 10px 0;
+            padding: 12px;
+            background: #edf2f7;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .options li:hover {
+            background: #e2e8f0;
+            transform: translateX(5px);
+        }
+        
+        .options li.selected {
+            background: #667eea;
+            color: white;
+            border-color: #4c51bf;
+        }
+        
+        .options li.correct {
+            background: #48bb78;
+            color: white;
+            border-color: #38a169;
+        }
+        
+        .options li.incorrect {
+            background: #f56565;
+            color: white;
+            border-color: #e53e3e;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .feedback.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+        
+        .quiz-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .quiz-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .quiz-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            background: #ebf8ff;
+            border-radius: 8px;
+            border: 2px solid #3182ce;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+        
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: #5a67d8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>The Flipped Interaction Pattern</h1>
+            <p>When AI Becomes the Interviewer</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+        
+        <div class="content">
+            <p>Have you ever walked into a doctor's office and felt confused about how to explain your problem? Instead of you rambling about symptoms, what if the doctor asked you specific questions to understand your issue better?</p>
+
+            <p>This is exactly what the <strong>Flipped Interaction Pattern</strong> does in AI conversations!</p>
+
+            <h2>What is the Flipped Interaction Pattern?</h2>
+
+            <div class="example-box">
+                <p><strong>Simple Definition:</strong> The Flipped Interaction Pattern is a prompt engineering technique where instead of you telling AI what to do, you ask the AI to interview YOU by asking questions until it has enough information to help you properly.</p>
+            </div>
+
+            <p><strong>Traditional Way:</strong> "Here's all my information about my app. Now help me deploy it to the cloud."</p>
+
+            <p><strong>Flipped Interaction Way:</strong> "Ask me questions until you know enough to help me deploy my app to the cloud."</p>
+
+            <p>Think of it like this - instead of dumping all information at once, you let the AI guide the conversation by asking smart questions.</p>
+
+            <h2>Core Concepts of Flipped Interaction</h2>
+
+            <h3>1. Role Reversal & Interview Dynamic</h3>
+
+            <p>In normal AI conversations, humans ask questions and AI answers. But with Flipped Interaction, the AI becomes like an interviewer who asks strategic questions to understand your needs better.</p>
+
+            <div class="example-box">
+                <h4>Real-Life Example:</h4>
+                <ul>
+                    <li><strong>Bad approach:</strong> Walking into a restaurant and saying "Give me food" (too vague!)</li>
+                    <li><strong>Good approach:</strong> The waiter asks "Are you vegetarian? Any allergies? Do you prefer spicy or mild?" until they can recommend the perfect dish.</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <h4>AI Example:</h4>
+                <ul>
+                    <li><strong>Instead of:</strong> "Help me create a workout plan. I'm 25, want to lose weight, have 30 minutes daily, no gym access."</li>
+                    <li><strong>You say:</strong> "Ask me questions until you have enough information to create a personalized workout plan for me."</li>
+                </ul>
+            </div>
+
+            <h3>2. Goal-Directed Questioning</h3>
+
+            <p>The AI doesn't ask random questions. It asks purposeful questions that build toward a specific goal. Each question gets you closer to the solution you need.</p>
+
+            <div class="tip-box">
+                <p><strong>Think of it like a GPS:</strong> A smart GPS doesn't ask "Do you want to go north?" Instead, it asks "What's your destination?" then "Do you want the fastest or scenic route?" Each question is strategic.</p>
+            </div>
+
+            <div class="example-box">
+                <h4>AI Example:</h4>
+                <p>If your goal is "help me choose a programming language," the AI won't ask random questions. Instead:</p>
+                <ol>
+                    <li>"What type of application are you building?"</li>
+                    <li>"Who will be using it?"</li>
+                    <li>"Do you have any coding experience?"</li>
+                    <li>"What's your timeline?"</li>
+                </ol>
+                <p>Each question helps narrow down to the perfect language recommendation.</p>
+            </div>
+
+            <h2>Why is This Pattern Important in NLP?</h2>
+
+            <h3>The Problem It Solves</h3>
+            <p>Most people don't know what information AI needs to give good answers. It's like trying to order food in a foreign country - you know what you want (good food) but don't know how to communicate it effectively.</p>
+
+            <div class="example-box">
+                <h4>Real-Life Comparison:</h4>
+                <ul>
+                    <li><strong>Without Flipped Interaction:</strong> Like a student saying "Teach me math" (too broad!)</li>
+                    <li><strong>With Flipped Interaction:</strong> Like a tutor asking "What grade are you in? What's your biggest challenge? How do you learn best?" (focused and useful)</li>
+                </ul>
+            </div>
+
+            <h3>Impact on Model Performance</h3>
+
+            <h4>1. Better Input Quality = Better Output Quality</h4>
+            <p>When AI asks specific questions, it gets exactly the information it needs. This leads to much more accurate and helpful responses.</p>
+
+            <div class="example-box">
+                <h4>Example:</h4>
+                <ul>
+                    <li><strong>Vague Input:</strong> "Help me with my website"</li>
+                    <li><strong>AI Response:</strong> Generic, probably unhelpful advice</li>
+                    <li><strong>After Flipped Interaction:</strong> AI asks about purpose, audience, technical skills, budget, timeline</li>
+                    <li><strong>Result:</strong> Specific, actionable recommendations just for your situation</li>
+                </ul>
+            </div>
+
+            <h4>2. Less Confusion and Back-and-forth</h4>
+            <p>Instead of 10 rounds of "That's not what I meant," you get the right answer faster.</p>
+
+            <h3>Impact on User Experience</h3>
+
+            <h4>1. Eliminates the "Blank Page Problem"</h4>
+            <p>You know when you stare at a blank document not knowing what to write? Flipped Interaction eliminates that by having AI guide you.</p>
+
+            <h4>2. Educational Benefit</h4>
+            <p>The AI's questions teach you what factors are important, making you smarter about the topic.</p>
+
+            <h2>Real-World Success Story</h2>
+
+            <h3>Medical Diagnosis AI Chatbot</h3>
+
+            <div class="success-box">
+                <p><strong>The Situation:</strong> A healthcare startup created an AI symptom checker for rural areas where doctors are hard to find.</p>
+            </div>
+
+            <h4>Traditional Approach Problems:</h4>
+            <ul>
+                <li>Users would type "I feel sick" (not helpful!)</li>
+                <li>Or they'd write long paragraphs of random symptoms</li>
+                <li>AI would give generic advice</li>
+                <li>Frustrated users would give up</li>
+            </ul>
+
+            <h4>Flipped Interaction Solution:</h4>
+            <p>The AI was programmed to act like an experienced nurse:</p>
+
+            <div class="code-block">
+AI: "I'll ask you some questions to understand your symptoms better. How long have you been feeling unwell?"
+
+User: "About 3 days"
+
+AI: "On a scale of 1-10, how bad is your discomfort?"
+
+User: "About 7"
+
+AI: "Are you having fever, chills, or sweating?"
+
+User: "Yes, fever and chills"
+            </div>
+
+            <h4>The Amazing Results:</h4>
+            <div class="success-box">
+                <ul>
+                    <li><strong>89% more accurate</strong> symptom assessment compared to free-form input</li>
+                    <li><strong>Users completed consultations 3x faster</strong></li>
+                    <li><strong>Identified serious cases</strong> that users initially described as "just feeling off"</li>
+                    <li><strong>Rural clinic visits reduced by 40%</strong> for non-emergency cases</li>
+                </ul>
+            </div>
+
+            <h4>Why It Worked:</h4>
+            <ol>
+                <li><strong>Complete Coverage:</strong> AI made sure no important symptoms were missed</li>
+                <li><strong>User-Friendly:</strong> Patients just answered simple questions</li>
+                <li><strong>Professional Structure:</strong> Following proper medical interview methods</li>
+                <li><strong>Right Urgency:</strong> AI knew when to recommend immediate medical care vs. home remedies</li>
+            </ol>
+
+            <h2>Practical Example: The Apartment Hunting Challenge</h2>
+
+            <p>Let me show you how Flipped Interaction works with a real scenario that many students face.</p>
+
+            <h3>The Scenario</h3>
+            <p>Meet Alex, a 25-year-old who just got a job in Boston and needs to find an apartment. He's never lived there before and feels completely overwhelmed.</p>
+
+            <h4>Alex's Problems:</h4>
+            <ul>
+                <li>Hundreds of apartment listings on different websites</li>
+                <li>Too many factors to consider: rent, location, commute, safety, parking</li>
+                <li>Hidden costs he doesn't know about</li>
+                <li>Time pressure (good apartments get rented quickly)</li>
+                <li>No idea which neighborhoods are good</li>
+            </ul>
+
+            <div class="tip-box">
+                <h4>Why This is Perfect for Flipped Interaction:</h4>
+                <ul>
+                    <li>Information overload</li>
+                    <li>Interconnected decisions (budget affects neighborhood, which affects commute)</li>
+                    <li>Knowledge gap (first-time renters don't know what to ask)</li>
+                    <li>High stakes (wrong choice affects daily life)</li>
+                </ul>
+            </div>
+
+            <h3>Two Different Prompts for the Same Goal</h3>
+
+            <h4>Prompt #1: Professional Housing Consultant</h4>
+            <p><em>[Professional tone, comprehensive approach]</em></p>
+
+            <div class="code-block">
+"I need you to act as an experienced relocation consultant who has helped hundreds of young professionals find apartments in new cities. 
+
+I'm moving to Boston for my job and feeling completely overwhelmed by apartment hunting. Please conduct a thorough consultation with me to understand my specific situation, priorities, and constraints.
+
+Ask me detailed questions about my workplace location, budget (including hidden costs I might not know about), lifestyle preferences, must-have features, deal-breakers, transportation needs, and timeline. Consider factors I might not have thought of.
+
+Continue interviewing me until you have enough information to provide:
+1. A realistic total housing budget breakdown
+2. Specific neighborhood recommendations with pros/cons  
+3. A prioritized list of apartment features
+4. A strategic apartment search plan with timeline
+5. Key questions to ask landlords and red flags to avoid
+
+Please ask questions one at a time and explain why each factor is important."
+            </div>
+
+            <h4>Prompt #2: Friendly Housing Buddy</h4>
+            <p><em>[Casual tone, simple approach]</em></p>
+
+            <div class="code-block">
+"Hey! I'm totally stressed about finding an apartment in Boston and could really use some help. I'm starting my job soon and need to find a place, but honestly, I have no idea where to start.
+
+Can you help me figure out the basics? Ask me some questions to understand my situation and help me narrow down what I should actually be looking for. I'm mostly worried about not spending too much money and ending up somewhere safe and decent.
+
+Keep it simple and friendly - I'm already overwhelmed enough! When you have enough info, just help me figure out a realistic budget and what neighborhoods I should focus on. I don't need anything fancy, just practical advice to get me started."
+            </div>
+
+            <h3>Analysis of AI Responses</h3>
+
+            <h4>AI Response to Professional Prompt:</h4>
+            <p>The AI positioned itself as an expert consultant and asked strategic questions:</p>
+
+            <div class="example-box">
+                <p><em>"Where will you be working in Boston? Please tell me the specific neighborhood or company name. This is crucial because Boston's geography and transportation system will heavily influence where you should live..."</em></p>
+            </div>
+
+            <h4>Strengths:</h4>
+            <ul>
+                <li>Establishes credibility immediately</li>
+                <li>Asks the most important question first (work location)</li>
+                <li>Explains WHY the question matters (MBTA system, commute impact)</li>
+                <li>Shows local expertise (mentions "the T", neighborhood connectivity)</li>
+                <li>Systematic approach</li>
+            </ul>
+
+            <h4>Weaknesses:</h4>
+            <ul>
+                <li>Very detailed explanation might overwhelm a stressed person</li>
+                <li>Only asks one question at a time (slower process)</li>
+                <li>Assumes some transit knowledge</li>
+            </ul>
+
+            <h4>AI Response to Friendly Prompt:</h4>
+            <p>The AI took a supportive, casual approach:</p>
+
+            <div class="example-box">
+                <p><em>"Hey! I totally get why apartment hunting feels overwhelming... Let me ask you a few quick questions: What's your starting salary? Where in Boston is your job? Do you have a car? Are you open to roommates?"</em></p>
+            </div>
+
+            <h4>Strengths:</h4>
+            <ul>
+                <li>Immediately validates feelings and reduces anxiety</li>
+                <li>Covers multiple key factors quickly</li>
+                <li>Encouraging tone ("Boston has lots of safe, decent areas")</li>
+                <li>User-friendly language</li>
+            </ul>
+
+            <h4>Weaknesses:</h4>
+            <ul>
+                <li>Asks too many questions at once (might overwhelm)</li>
+                <li>Less strategic structure</li>
+                <li>Doesn't explain why questions matter</li>
+                <li>Assumes some Boston knowledge</li>
+            </ul>
+
+            <h3>Key Insights from This Analysis</h3>
+
+            <ol>
+                <li><strong>Tone Flexibility:</strong> The same pattern works with professional or casual tones, adapting to user preferences.</li>
+                <li><strong>Question Strategy Matters:</strong> 
+                    <ul>
+                        <li>Professional version: Deep, strategic, one-at-a-time</li>
+                        <li>Friendly version: Broad, practical, multiple-at-once</li>
+                    </ul>
+                </li>
+                <li><strong>User State Consideration:</strong> 
+                    <ul>
+                        <li>Stressed users might prefer supportive tone</li>
+                        <li>Analytical users might prefer detailed explanations</li>
+                    </ul>
+                </li>
+                <li><strong>Pattern Effectiveness:</strong> Both approaches successfully implement Flipped Interaction by making AI the interviewer and gathering goal-directed information.</li>
+            </ol>
+
+            <h2>Tips for Creating Better Flipped Interaction Prompts</h2>
+
+            <p>Based on our analysis, here are some practical tips:</p>
+
+            <div class="tip-box">
+                <h4>1. Be Clear About Your Goal</h4>
+                <p>Always tell the AI exactly what end result you want. "Ask me questions until you can help me..."</p>
+
+                <h4>2. Specify Your Preferred Style</h4>
+                <p>Tell the AI whether you want:</p>
+                <ul>
+                    <li>Professional vs. casual tone</li>
+                    <li>One question at a time vs. multiple questions</li>
+                    <li>Detailed explanations vs. simple approach</li>
+                </ul>
+
+                <h4>3. Set Boundaries</h4>
+                <p>Let the AI know:</p>
+                <ul>
+                    <li>How many questions you're willing to answer</li>
+                    <li>What information you're comfortable sharing</li>
+                    <li>If you want the AI to explain why it's asking each question</li>
+                </ul>
+
+                <h4>4. Include Your Context</h4>
+                <p>Mention if you're:</p>
+                <ul>
+                    <li>A beginner who needs extra explanation</li>
+                    <li>Overwhelmed and need a gentle approach</li>
+                    <li>Experienced and want to move quickly</li>
+                </ul>
+            </div>
+
+            <h2>Conclusion</h2>
+
+            <p>The Flipped Interaction Pattern is like having a smart conversation partner who knows exactly what questions to ask to help you. Instead of you guessing what information to provide, the AI guides the conversation systematically.</p>
+
+            <div class="success-box">
+                <h4>This pattern works because:</h4>
+                <ul>
+                    <li>It reduces information overload</li>
+                    <li>Ensures nothing important is missed</li>
+                    <li>Builds understanding step by step</li>
+                    <li>Adapts to your specific situation</li>
+                    <li>Leads to better, more personalized results</li>
+                </ul>
+            </div>
+
+            <p>Whether you're planning a trip, choosing a career path, diagnosing a problem, or making any complex decision, letting AI interview you often leads to much better outcomes than trying to explain everything at once.</p>
+
+            <p>The next time you need AI help with something complex, try saying: <em>"Ask me questions until you have enough information to help me with [your goal]."</em> You might be surprised by how much better the results are!</p>
+        </div>
+
+        <div class="interactive-section">
+            <h2>Ready to Test Your Understanding?</h2>
+            <p>Take our interactive quiz and try hands-on exercises to master the Flipped Interaction Pattern!</p>
+            <a href="#quiz-section" class="interactive-btn">Take the Quiz</a>
+            <a href="#exercise-section" class="interactive-btn">Try Exercises</a>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz-section" class="quiz-container">
+            <h2 style="text-align: center; color: #2d3748; margin-bottom: 30px;">Test Your Knowledge</h2>
+            
+            <div class="question" id="q1">
+                <h3>Question 1: What is the main idea behind the Flipped Interaction Pattern?</h3>
+                <ul class="options">
+                    <li onclick="selectAnswer(1, 1, false)">A) The user gives all information at once to the AI</li>
+                    <li onclick="selectAnswer(1, 2, true)">B) The AI asks questions to gather information systematically</li>
+                    <li onclick="selectAnswer(1, 3, false)">C) The AI provides answers without asking questions</li>
+                    <li onclick="selectAnswer(1, 4, false)">D) The user and AI take turns asking random questions</li>
+                </ul>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+            
+            <div class="question" id="q2">
+                <h3>Question 2: Which scenario is the BEST example of Flipped Interaction?</h3>
+                <ul class="options">
+                    <li onclick="selectAnswer(2, 1, false)">A) "Here's my budget, timeline, and preferences. Plan my vacation."</li>
+                    <li onclick="selectAnswer(2, 2, true)">B) "Ask me questions until you know enough to plan my perfect vacation."</li>
+                    <li onclick="selectAnswer(2, 3, false)">C) "What are the top 10 vacation destinations?"</li>
+                    <li onclick="selectAnswer(2, 4, false)">D) "I need help but I don't know what I want."</li>
+                </ul>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+            
+            <div class="question" id="q3">
+                <h3>Question 3: What is a key benefit of using Flipped Interaction Pattern?</h3>
+                <ul class="options">
+                    <li onclick="selectAnswer(3, 1, false)">A) It makes conversations longer</li>
+                    <li onclick="selectAnswer(3, 2, true)">B) It helps AI gather exactly the information it needs for better responses</li>
+                    <li onclick="selectAnswer(3, 3, false)">C) It allows users to avoid answering questions</li>
+                    <li onclick="selectAnswer(3, 4, false)">D) It makes AI responses more generic</li>
+                </ul>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+            
+            <div class="question" id="q4">
+                <h3>Question 4: In the medical chatbot example, what was the main improvement from using Flipped Interaction?</h3>
+                <ul class="options">
+                    <li onclick="selectAnswer(4, 1, false)">A) Patients could type longer descriptions</li>
+                    <li onclick="selectAnswer(4, 2, true)">B) 89% more accurate symptom assessment and 3x faster consultations</li>
+                    <li onclick="selectAnswer(4, 3, false)">C) Doctors had to work less</li>
+                    <li onclick="selectAnswer(4, 4, false)">D) Patients didn't need to visit clinics anymore</li>
+                </ul>
+                <div class="feedback" id="feedback4"></div>
+            </div>
+            
+            <div class="question" id="q5">
+                <h3>Question 5: When creating a Flipped Interaction prompt, what should you always include?</h3>
+                <ul class="options">
+                    <li onclick="selectAnswer(5, 1, false)">A) A list of possible answers</li>
+                    <li onclick="selectAnswer(5, 2, false)">B) Your personal information</li>
+                    <li onclick="selectAnswer(5, 3, true)">C) A clear goal for what you want the AI to achieve through questioning</li>
+                    <li onclick="selectAnswer(5, 4, false)">D) Technical jargon to sound professional</li>
+                </ul>
+                <div class="feedback" id="feedback5"></div>
+            </div>
+            
+            <div class="score-display" id="scoreDisplay" style="display: none;">
+                <h3>Quiz Complete!</h3>
+                <p id="scoreText"></p>
+                <button onclick="resetQuiz()" class="quiz-btn">Retake Quiz</button>
+            </div>
+        </div>
+
+        <!-- Exercise Section -->
+        <div id="exercise-section" class="quiz-container">
+            <h2 style="text-align: center; color: #2d3748; margin-bottom: 30px;">Hands-On Exercise</h2>
+            
+            <h3>Exercise: Create Your Own Flipped Interaction Prompt</h3>
+            
+            <div class="success-box">
+                <h4>Scenario: College Course Selection</h4>
+                <p><strong>Background:</strong> You're a college student who needs to choose elective courses for next semester. You're overwhelmed by the hundreds of available courses and don't know which ones would be best for your career goals, interests, and schedule.</p>
+                
+                <p><strong>Current Problem:</strong> Students typically just browse course catalogs randomly or pick based on friends' recommendations, often ending up with courses that don't match their goals or are too difficult/easy for their level.</p>
+                
+                <p><strong>Your Task:</strong> Create a Flipped Interaction prompt that would help AI systematically interview students to recommend the perfect courses for them.</p>
+            </div>
+            
+            <div class="tip-box">
+                <h4>Tips for Creating Your Prompt:</h4>
+                <ul>
+                    <li>Think about what information AI would need to recommend courses</li>
+                    <li>Consider factors like: major, career goals, academic level, time availability, learning preferences, interests</li>
+                    <li>Decide on the tone (professional vs. casual)</li>
+                    <li>Include the end goal clearly</li>
+                    <li>Specify how you want the questioning to be conducted</li>
+                </ul>
+            </div>
+            
+            <h4>Your Flipped Interaction Prompt:</h4>
+            <textarea id="userPrompt" placeholder="Write your Flipped Interaction prompt here... 
+
+Example start: 'I need you to act as an academic advisor who...'" style="width: 100%; min-height: 120px; padding: 15px; border: 2px solid #e2e8f0; border-radius: 5px; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+            
+            <div style="margin: 20px 0;">
+                <button onclick="analyzePrompt()" class="quiz-btn">Analyze My Prompt</button>
+                <button onclick="clearPrompt()" class="quiz-btn">Clear & Start Over</button>
+            </div>
+            
+            <div id="promptFeedback" style="display: none; margin-top: 20px; padding: 20px; border-radius: 8px;"></div>
+            
+            <div class="example-box">
+                <h4>Reflection Questions:</h4>
+                <ol>
+                    <li><strong>Goal Clarity:</strong> Is it clear what the AI should achieve through questioning?</li>
+                    <li><strong>Information Strategy:</strong> What key information does the AI need to gather?</li>
+                    <li><strong>User Experience:</strong> How would a stressed student feel about your prompt's tone and approach?</li>
+                    <li><strong>Questioning Style:</strong> Should the AI ask one question at a time or multiple questions?</li>
+                    <li><strong>Completeness:</strong> What would make the AI stop asking questions?</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="../index.html">← Back to Portfolio</a>
+            <a href="#top">↑ Back to Top</a>
+        </div>
+    </div>
+
+    <script>
+        let currentAnswers = {};
+        let quizCompleted = false;
+        
+        function selectAnswer(questionNum, answerNum, isCorrect) {
+            if (quizCompleted) return;
+            
+            // Remove previous selections
+            const options = document.querySelectorAll(`#q${questionNum} .options li`);
+            options.forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Mark current selection
+            const selectedOption = document.querySelector(`#q${questionNum} .options li:nth-child(${answerNum})`);
+            selectedOption.classList.add('selected');
+            
+            // Store answer
+            currentAnswers[questionNum] = {selected: answerNum, correct: isCorrect};
+            
+            // Show feedback after a brief delay
+            setTimeout(() => {
+                showFeedback(questionNum, isCorrect);
+                checkQuizCompletion();
+            }, 500);
+        }
+        
+        function showFeedback(questionNum, isCorrect) {
+            const feedback = document.getElementById(`feedback${questionNum}`);
+            const options = document.querySelectorAll(`#q${questionNum} .options li`);
+            
+            if (isCorrect) {
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '✅ Correct! Great job understanding the concept.';
+                options[currentAnswers[questionNum].selected - 1].classList.add('correct');
+            } else {
+                feedback.className = 'feedback incorrect';
+                let correctFeedback = '';
+                switch(questionNum) {
+                    case 1:
+                        correctFeedback = '❌ Not quite. The key idea is that AI becomes the interviewer, asking strategic questions to gather information.';
+                        break;
+                    case 2:
+                        correctFeedback = '❌ Not quite. The best example is when you ask AI to interview you rather than providing all information upfront.';
+                        break;
+                    case 3:
+                        correctFeedback = '❌ Not quite. The main benefit is getting exactly the right information for more accurate, personalized responses.';
+                        break;
+                    case 4:
+                        correctFeedback = '❌ Not quite. The key improvement was 89% more accurate assessments and 3x faster consultations.';
+                        break;
+                    case 5:
+                        correctFeedback = '❌ Not quite. Always include a clear goal for what you want the AI to achieve through questioning.';
+                        break;
+                }
+                feedback.innerHTML = correctFeedback;
+                options[currentAnswers[questionNum].selected - 1].classList.add('incorrect');
+            }
+            
+            feedback.style.display = 'block';
+        }
+        
+        function checkQuizCompletion() {
+            if (Object.keys(currentAnswers).length === 5) {
+                const correctCount = Object.values(currentAnswers).filter(answer => answer.correct).length;
+                setTimeout(() => {
+                    showFinalScore(correctCount);
+                }, 1000);
+            }
+        }
+        
+        function showFinalScore(correctCount) {
+            quizCompleted = true;
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreText = document.getElementById('scoreText');
+            
+            let message = '';
+            if (correctCount === 5) {
+                message = '🎉 Perfect Score! You completely understand the Flipped Interaction Pattern!';
+            } else if (correctCount >= 3) {
+                message = `👍 Great job! You got ${correctCount}/5 correct. You have a solid understanding of the pattern.`;
+            } else {
+                message = `📚 You got ${correctCount}/5 correct. Consider reviewing the concepts and try again!`;
+            }
+            
+            scoreText.textContent = message;
+            scoreDisplay.style.display = 'block';
+            scoreDisplay.scrollIntoView({behavior: 'smooth'});
+        }
+        
+        function resetQuiz() {
+            currentAnswers = {};
+            quizCompleted = false;
+            
+            // Reset all options and feedback
+            document.querySelectorAll('.options li').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+            
+            document.getElementById('scoreDisplay').style.display = 'none';
+        }
+        
+        function analyzePrompt() {
+            const prompt = document.getElementById('userPrompt').value.trim();
+            const feedback = document.getElementById('promptFeedback');
+            
+            if (!prompt) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#fed7d7';
+                feedback.style.border = '2px solid #fc8181';
+                feedback.innerHTML = '❌ Please write a prompt first!';
+                return;
+            }
+            
+            // Simple analysis based on key elements
+            let score = 0;
+            let strengths = [];
+            let improvements = [];
+            
+            // Check for goal clarity
+            if (prompt.toLowerCase().includes('ask') && prompt.toLowerCase().includes('question')) {
+                score += 2;
+                strengths.push('✅ Clearly requests AI to ask questions');
+            } else {
+                improvements.push('❓ Could be clearer about wanting AI to ask questions');
+            }
+            
+            // Check for role definition
+            if (prompt.toLowerCase().includes('act as') || prompt.toLowerCase().includes('advisor') || prompt.toLowerCase().includes('expert')) {
+                score += 2;
+                strengths.push('✅ Defines a clear role for the AI');
+            } else {
+                improvements.push('❓ Consider defining a specific role for the AI');
+            }
+            
+            // Check for goal statement
+            if (prompt.toLowerCase().includes('until') || prompt.toLowerCase().includes('enough information')) {
+                score += 2;
+                strengths.push('✅ Specifies when questioning should stop');
+            } else {
+                improvements.push('❓ Could specify when the AI should stop asking questions');
+            }
+            
+            // Check for context
+            if (prompt.toLowerCase().includes('student') || prompt.toLowerCase().includes('course') || prompt.toLowerCase().includes('semester')) {
+                score += 1;
+                strengths.push('✅ Includes relevant context about the scenario');
+            }
+            
+            // Check for outcome specification
+            if (prompt.toLowerCase().includes('recommend') || prompt.toLowerCase().includes('help') || prompt.toLowerCase().includes('choose')) {
+                score += 1;
+                strengths.push('✅ Specifies desired outcome');
+            }
+            
+            // Generate feedback
+            let feedbackHTML = '<h4>📊 Prompt Analysis Results</h4>';
+            
+            if (score >= 6) {
+                feedbackHTML += '<p style="color: #22543d; font-weight: bold;">🌟 Excellent! Your prompt demonstrates strong understanding of Flipped Interaction.</p>';
+            } else if (score >= 4) {
+                feedbackHTML += '<p style="color: #744210; font-weight: bold;">👍 Good work! Your prompt covers most key elements.</p>';
+            } else {
+                feedbackHTML += '<p style="color: #742a2a; font-weight: bold;">📚 Keep working! Review the key elements of Flipped Interaction prompts.</p>';
+            }
+            
+            if (strengths.length > 0) {
+                feedbackHTML += '<h5>Strengths:</h5><ul>';
+                strengths.forEach(strength => {
+                    feedbackHTML += `<li>${strength}</li>`;
+                });
+                feedbackHTML += '</ul>';
+            }
+            
+            if (improvements.length > 0) {
+                feedbackHTML += '<h5>Areas for Improvement:</h5><ul>';
+                improvements.forEach(improvement => {
+                    feedbackHTML += `<li>${improvement}</li>`;
+                });
+                feedbackHTML += '</ul>';
+            }
+            
+            feedback.style.display = 'block';
+            feedback.style.background = score >= 4 ? '#c6f6d5' : '#fffaf0';
+            feedback.style.border = score >= 4 ? '2px solid #9ae6b4' : '2px solid #f6ad55';
+            feedback.innerHTML = feedbackHTML;
+        }
+        
+        function clearPrompt() {
+            document.getElementById('userPrompt').value = '';
+            document.getElementById('promptFeedback').style.display = 'none';
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

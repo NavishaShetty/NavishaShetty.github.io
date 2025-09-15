@@ -370,7 +370,7 @@ class PortfolioApp {
                     <p>Just wrapped up the DeepLearning.ai "Building & Evaluating AI Agents" course, and I'm excited to share what I learned by building something real.</p>
                     
                     <p>Agents feel like the next inflection point: they don't just answer questions, they use tools to get real work done. After the course, I pointed that power at something from my day-job—battery energy storage trading—and the result is <strong>BESS-Coding-Agent</strong>.</p>
-
+    
                     <h2>What It Does</h2>
                     <p>The BESS Coding Agent is designed to solve real-world problems in energy trading:</p>
                     
@@ -381,13 +381,13 @@ class PortfolioApp {
                         <li><strong>Chat UI interface</strong> for natural language interaction with complex energy data</li>
                         <li><strong>Phoenix dashboard integration</strong> streams every tool call and model decision for easy debugging</li>
                     </ul>
-
+    
                     <h2>Technical Implementation</h2>
                     <p>Building this agent involved several key technical decisions:</p>
                     
                     <h3>SmolAgents Framework</h3>
                     <p>I chose SmolAgents for its lightweight approach to building LLM-powered agents. It provided the perfect balance between functionality and simplicity for this project.</p>
-
+    
                     <h3>Custom Tool Development</h3>
                     <p>Created specialized tools for:</p>
                     <ul>
@@ -396,19 +396,19 @@ class PortfolioApp {
                         <li>Profit analysis and reporting</li>
                         <li>Market condition assessment</li>
                     </ul>
-
+    
                     <h3>Observability with Phoenix</h3>
                     <p>Integrated Phoenix tracing to monitor every decision the agent makes. This transparency is crucial when dealing with financial trading decisions.</p>
-
+    
                     <blockquote>
                         "Conversational chatbots were just the beginning; agents turn 'nice answers' into actions."
                     </blockquote>
-
+    
                     <h2>Why I'm Excited</h2>
                     <p>After seeing this work on a real dataset, I'm re-thinking how AI can slot into every workflow I touch. The ability to have natural conversations about complex energy market data and get actionable trading recommendations feels transformative.</p>
-
+    
                     <p>This project demonstrates that agents aren't just fancy chatbots—they're tools that can understand context, use specialized tools, and provide real business value.</p>
-
+    
                     <h2>Key Learnings</h2>
                     <ol>
                         <li><strong>Tool Design Matters</strong>: The quality of your custom tools directly impacts agent performance</li>
@@ -416,14 +416,94 @@ class PortfolioApp {
                         <li><strong>Domain Knowledge Integration</strong>: Combining LLM capabilities with industry-specific logic creates powerful solutions</li>
                         <li><strong>User Experience Focus</strong>: A chat interface makes complex data accessible to non-technical users</li>
                     </ol>
-
+    
                     <h2>What's Next</h2>
                     <p>This feels like chapter 1 of something bigger. I'm keen to keep learning, ship more agent-powered helpers, and—hopefully—make software a lot more fun (and useful!) along the way.</p>
-
+    
                     <p>The intersection of AI agents and specialized domains like energy trading opens up endless possibilities. I'm excited to explore more applications and continue pushing the boundaries of what's possible.</p>
-
+    
                     <h3>Try It Yourself</h3>
                     <p>If you're curious about the implementation details or want to experiment with the code, check out the <a href="https://github.com/NavishaShetty/BESS-Coding-Agent" target="_blank">GitHub repository</a>. I'd love to hear your thoughts or ideas for improvement!</p>
+                    
+                    <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
+                </div>
+            `;
+        }
+    
+        // Special content for Flipped Interaction Pattern post
+        if (post.id === 'flipped-interaction-pattern') {
+            return `
+                <div class="blog-content">
+                    <h2>What is the Flipped Interaction Pattern?</h2>
+                    <p>Have you ever walked into a doctor's office and felt confused about how to explain your problem? Instead of you rambling about symptoms, what if the doctor asked you specific questions to understand your issue better?</p>
+                    
+                    <p>This is exactly what the <strong>Flipped Interaction Pattern</strong> does in AI conversations!</p>
+    
+                    <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                        <p><strong>Simple Definition:</strong> The Flipped Interaction Pattern is a prompt engineering technique where instead of you telling AI what to do, you ask the AI to interview YOU by asking questions until it has enough information to help you properly.</p>
+                    </div>
+    
+                    <h2>Why This Pattern Matters</h2>
+                    <p>Most people don't know what information AI needs to give good answers. It's like trying to order food in a foreign country - you know what you want (good food) but don't know how to communicate it effectively.</p>
+    
+                    <h3>Real-World Success Story</h3>
+                    <p>A healthcare startup created an AI symptom checker using this pattern. Instead of users typing "I feel sick," the AI acted like an experienced nurse asking targeted questions.</p>
+    
+                    <p><strong>Results:</strong></p>
+                    <ul>
+                        <li>89% more accurate symptom assessment</li>
+                        <li>Users completed consultations 3x faster</li>
+                        <li>Identified serious cases that users initially described as "just feeling off"</li>
+                        <li>Rural clinic visits reduced by 40% for non-emergency cases</li>
+                    </ul>
+    
+                    <h2>Core Concepts</h2>
+    
+                    <h3>1. Role Reversal & Interview Dynamic</h3>
+                    <p>In normal AI conversations, humans ask questions and AI answers. But with Flipped Interaction, the AI becomes like an interviewer who asks strategic questions to understand your needs better.</p>
+    
+                    <h3>2. Goal-Directed Questioning</h3>
+                    <p>The AI doesn't ask random questions. It asks purposeful questions that build toward a specific goal. Each question gets you closer to the solution you need.</p>
+    
+                    <h2>Practical Examples</h2>
+                    <p>I've created an in-depth tutorial with real examples showing how this pattern works in scenarios like apartment hunting, where the AI systematically interviews you to understand your needs.</p>
+    
+                    <div style="background: #fff8e1; border: 2px solid #ffa726; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center;">
+                        <h3>📚 Want to Learn More?</h3>
+                        <p>This blog post is just a preview! I've created a comprehensive interactive tutorial with:</p>
+                        <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+                            <li>Detailed examples and case studies</li>
+                            <li>Interactive quiz to test your understanding</li>
+                            <li>Hands-on exercises to practice</li>
+                            <li>Tips for creating your own prompts</li>
+                        </ul>
+                        <div style="margin: 20px 0;">
+                            <a href="blog/flipped-interaction-pattern.html" target="_blank" style="display: inline-block; background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin: 10px;">
+                                📖 Read Full Tutorial
+                            </a>
+                            <a href="blog/flipped-interaction-pattern.html#quiz-section" target="_blank" style="display: inline-block; background: #48bb78; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin: 10px;">
+                                🎯 Take Interactive Quiz
+                            </a>
+                        </div>
+                    </div>
+    
+                    <h2>Key Takeaways</h2>
+                    <p>The Flipped Interaction Pattern is like having a smart conversation partner who knows exactly what questions to ask to help you. Instead of you guessing what information to provide, the AI guides the conversation systematically.</p>
+    
+                    <p>This pattern works because:</p>
+                    <ul>
+                        <li>It reduces information overload</li>
+                        <li>Ensures nothing important is missed</li>
+                        <li>Builds understanding step by step</li>
+                        <li>Adapts to your specific situation</li>
+                        <li>Leads to better, more personalized results</li>
+                    </ul>
+    
+                    <p>Whether you're planning a trip, choosing a career path, diagnosing a problem, or making any complex decision, letting AI interview you often leads to much better outcomes than trying to explain everything at once.</p>
+    
+                    <blockquote>
+                        "The next time you need AI help with something complex, try saying: 'Ask me questions until you have enough information to help me with [your goal].' You might be surprised by how much better the results are!"
+                    </blockquote>
                     
                     <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
                 </div>
@@ -445,11 +525,11 @@ class PortfolioApp {
                     <li>Use a content management system or static site generator</li>
                     <li>Parse markdown to HTML for rich formatting</li>
                 </ul>
-
+    
                 <blockquote>
                     "${this.escapeHtml(post.excerpt)}"
                 </blockquote>
-
+    
                 <h3>Key Points</h3>
                 <p>Here are some key takeaways from this post:</p>
                 
@@ -459,14 +539,14 @@ class PortfolioApp {
                     <li>Best practices and common pitfalls</li>
                     <li>Future considerations and next steps</li>
                 </ol>
-
+    
                 <h3>Code Example</h3>
                 <pre><code>// Example code snippet
-function exampleFunction() {
-    console.log('This is a sample code block');
-    return 'You can add syntax highlighting here';
-}</code></pre>
-
+    function exampleFunction() {
+        console.log('This is a sample code block');
+        return 'You can add syntax highlighting here';
+    }</code></pre>
+    
                 <h2>Conclusion</h2>
                 <p>Thank you for reading this blog post. In a real implementation, this content would be much more comprehensive and would include the actual article content, images, and interactive elements.</p>
                 
