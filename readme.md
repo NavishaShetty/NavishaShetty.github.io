@@ -125,12 +125,12 @@ Create a new file: `blog/posts/your-post-name.html`
 }
 ```
 
-#### Type 2: Standalone Page (like Flipped Interaction Pattern)
-For interactive posts with their own styling, quizzes, etc:
+#### Type 2: Standalone Page
+For interactive posts with their own styling, etc:
 
 **Step 1:** Create full HTML page in `blog/` folder
 
-Create: `blog/your-interactive-post.html` (complete HTML with `<head>`, styles, scripts, etc.)
+Create: `blog/posts/ your-interactive-post.html` (complete HTML with `<head>`, styles, scripts, etc.)
 
 **Step 2:** Register with external link in `blog/posts.json`
 
@@ -140,7 +140,7 @@ Create: `blog/your-interactive-post.html` (complete HTML with `<head>`, styles, 
   "title": "Your Interactive Post Title",
   "date": "2025-10-03",
   "excerpt": "Brief summary",
-  "externalLink": "blog/your-interactive-post.html",
+  "externalLink": "blog/posts/your-interactive-post.html",
   "tags": ["tag1", "tag2"],
   "author": "Navisha Shetty"
 }
@@ -201,7 +201,7 @@ NavishaShetty.github.io/
 
 ---
 
-## 🚀 Deployment (GitHub Pages)
+## Deployment (GitHub Pages)
 
 Your portfolio is a **static website** - just HTML, CSS, and JavaScript files. GitHub Pages serves these directly.
 
@@ -209,39 +209,6 @@ Your portfolio is a **static website** - just HTML, CSS, and JavaScript files. G
 - Just push your code to GitHub
 - Enable GitHub Pages in repository settings
 - Access at: `https://navishashetty.github.io`
-
-### What You DON'T Need:
-- ❌ `package.json` (only for local development)
-- ❌ `package-lock.json` (only for local development)
-- ❌ Any build process
-- ❌ A backend server
-
-**Can delete safely:**
-- `package.json`
-- `package-lock.json`
-- `replit.md`
-
----
-
-## 🔧 What Changed in This Refactor
-
-### Before (Old Way):
-- ❌ All projects hardcoded in `index.html` - copy/paste HTML to add projects
-- ❌ Blog content hardcoded in `main.js` - edit JavaScript to add blog posts
-- ❌ About section hardcoded in `index.html`
-- ❌ Goals hardcoded in `index.html`
-
-### After (New Way):
-- ✅ Projects in `content/projects.json` - just add JSON object
-- ✅ Blog content in separate HTML files - create file + register in JSON
-- ✅ About section in `content/about.json` - edit text
-- ✅ Goals in `content/goals.json` - add/edit JSON objects
-
-### Key Improvements:
-1. **No More HTML/JavaScript Editing** for most changes
-2. **Simple JSON Files** for content management
-3. **Separate Blog Files** for easier writing
-4. **Cleaner Code** - removed 200+ lines from `main.js`
 
 ---
 
@@ -263,7 +230,7 @@ Just double-click `index.html` - works but blog posts may not load due to CORS.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Blog Posts Not Showing Up
 - Check `blog/posts.json` for correct `contentFile` path
@@ -283,78 +250,6 @@ Just double-click `index.html` - works but blog posts may not load due to CORS.
 - GitHub Pages can take 1-5 minutes to update
 - Clear your browser cache
 - Try incognito/private browsing mode
-
----
-
-## 📝 JSON Tips
-
-### Valid JSON:
-```json
-{
-  "name": "Value",
-  "number": 123,
-  "array": ["item1", "item2"]
-}
-```
-
-### Common Mistakes:
-- ❌ Trailing comma: `["item1", "item2",]`
-- ❌ Single quotes: `{'name': 'value'}`
-- ❌ Comments: `// not allowed in JSON`
-- ✅ Always use double quotes
-- ✅ No trailing commas
-- ✅ Validate with jsonlint.com
-
----
-
-## 💡 Future Enhancements (Optional)
-
-If you want to make it even easier:
-1. **Resume in JSON** - Convert resume section to JSON format
-2. **Blog Post Template** - Create a template file for new posts
-3. **Image Management** - Add images folder with instructions
-4. **Contact Form** - Add contact form integration
-5. **Analytics** - Add Google Analytics tracking
-
-Let me know if you want any of these!
-
----
-
-## 📞 Quick Help
-
-**Q: How do I add a project without a GitHub link?**
-A: Just omit the `github` field from the JSON object.
-
-**Q: Can I reorder projects?**
-A: Yes! Projects appear in the order they're listed in `projects.json`.
-
-**Q: How do I hide a blog post?**
-A: Remove it from `blog/posts.json` (the HTML file can stay).
-
-**Q: Can I use Markdown for blog posts?**
-A: Currently HTML only, but we could add Markdown support if needed.
-
-**Q: What if I break something?**
-A: Git is your friend! Just revert to the last working commit.
-
----
-
-## ✅ Checklist After Refactoring
-
-- [ ] Create `content/` folder
-- [ ] Create `content/projects.json`
-- [ ] Create `content/about.json`
-- [ ] Create `content/goals.json`
-- [ ] Create `blog/posts/` folder
-- [ ] Create `blog/posts/bess-agent.html`
-- [ ] Update `blog/posts.json`
-- [ ] Replace `js/main.js` with new version
-- [ ] Update `index.html`
-- [ ] Delete `package.json` (optional)
-- [ ] Delete `package-lock.json` (optional)
-- [ ] Test locally
-- [ ] Push to GitHub
-- [ ] Verify on GitHub Pages
 
 ---
 
