@@ -1,0 +1,26 @@
+[
+  {
+    "name": "BESS Coding Agent",
+    "description": "An intelligent LLM-based ReAct coding agent using SmolAgents framework for Battery Energy Storage Systems (BESS) trading optimization. Features real-time Day-Ahead Market data analysis, chat UI, and Phoenix observability dashboard.",
+    "github": "https://github.com/NavishaShetty/BESS-Coding-Agent",
+    "blog": "bess-coding-agent-journey",
+    "showBlogButton": true
+  },
+  {
+    "name": "News Articles Summarizer",
+    "description": "A comprehensive news summarization tool built with LangChain and multiple LLM endpoints (OpenAI GPT-4, Hugging Face T5). Streamlines content extraction and provides intelligent summarization of news articles.",
+    "github": "https://github.com/NavishaShetty/News-Articles-Summarizer-using-LLMs",
+    "showBlogButton": false
+  },
+  {
+    "name": "Credit Card Approval Prediction using Snowpark ML",
+    "description": "Implemented an end-to-end Credit Card approval predictor entirely inside Snowflake. Ingested the Kaggle dataset with Snowpark, engineered features, trained a classifier using Snowpark ML, and deployed it for real-time in-database scoring.",
+    "github": "https://github.com/NavishaShetty/Credit-Card-Approval-Snowpark",
+    "showBlogButton": false
+  },
+  {
+    "name": "Multi-modal Video AI System",
+    "description": "An advanced video understanding AI system using Video LLaVa model for predicting survey responses from video advertisements by analyzing visual data, descriptions, and captions with fine-tuned prompts.",
+    "showBlogButton": false
+  }
+]
