@@ -1,18 +1,19 @@
 [
-    {
-        "id": "bess-coding-agent-journey",
-        "title": "Building BESS Coding Agent: From DeepLearning.ai Course to Real-World Energy Trading",
-        "date": "2025-06-24",
-        "excerpt": "Just wrapped up the DeepLearning.ai 'Building & Evaluating AI Agents' course and applied those learnings to create an intelligent coding agent for battery energy storage trading. Here's my journey from theory to practice.",
-        "content": "Full blog post content about the BESS Coding Agent project...",
-        "tags": ["AI agents", "energy trading", "LLM", "SmolAgents"],
-        "author": "Navisha Shetty"
-    },
-    {
+  {
+    "id": "bess-coding-agent-journey",
+    "title": "Building BESS Coding Agent: From DeepLearning.ai Course to Real-World Energy Trading",
+    "date": "2025-06-24",
+    "excerpt": "Just wrapped up the DeepLearning.ai 'Building & Evaluating AI Agents' course and applied those learnings to create an intelligent coding agent for battery energy storage trading. Here's my journey from theory to practice.",
+    "contentFile": "blog/posts/bess_agent.html",
+    "tags": ["AI agents", "energy trading", "LLM", "SmolAgents"],
+    "author": "Navisha Shetty"
+  },
+  {
     "id": "flipped-interaction-pattern",
     "title": "The Flipped Interaction Pattern: When AI Becomes the Interviewer",
     "excerpt": "An educational guide exploring the Flipped Interaction Pattern in prompt engineering, featuring comprehensive examples, real-world applications, and interactive exercises to master AI conversation techniques.",
     "date": "2025-09-15",
+    "contentFile": "blog/posts/flipped-interaction-preview.html",
     "author": "Navisha Shetty", 
     "tags": ["AI", "Prompt Engineering", "Education", "Interactive", "NLP"]
   }

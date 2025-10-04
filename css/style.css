@@ -893,3 +893,44 @@ a {
     margin-bottom: 1rem;
     color: #333;
 }
+
+/* Make links in blog posts and resume look clickable */
+.blog-post-detail-content a:not(.btn):not(.btn *),
+.blog-content a:not(.btn):not(.btn *),
+.resume-content a:not(.btn):not(.btn *),
+.contact-details a:not(.btn):not(.btn *) {
+    color: #2563eb;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+.blog-post-detail-content a:not(.btn):not(.btn *):hover,
+.blog-content a:not(.btn):not(.btn *):hover,
+.resume-content a:not(.btn):not(.btn *):hover,
+.contact-details a:not(.btn):not(.btn *):hover {
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+/* Explicitly preserve button styling everywhere */
+.btn,
+.btn *,
+a.btn,
+a.btn *,
+.project-buttons a,
+.project-buttons a *,
+.resume-actions a,
+.resume-actions a * {
+    text-decoration: none !important;
+}
+
+/* Keep button text colors as defined in original styles */
+.btn-primary,
+.btn-primary * {
+    color: white !important;
+}
+
+.btn-secondary,
+.btn-secondary * {
+    color: #2563eb !important;
+}

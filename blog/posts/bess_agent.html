@@ -1,0 +1,61 @@
+<!-- BESS Coding Agent Blog Post Content -->
+<div class="blog-content">
+    <h2>The Journey Begins</h2>
+    <p>Just wrapped up the DeepLearning.ai "Building & Evaluating AI Agents" course, and I'm excited to share what I learned by building something real.</p>
+    
+    <p>Agents feel like the next inflection point: they don't just answer questions, they use tools to get real work done. After the course, I pointed that power at something from my day-job—battery energy storage trading—and the result is <strong>BESS-Coding-Agent</strong>.</p>
+
+    <h2>What It Does</h2>
+    <p>The BESS Coding Agent is designed to solve real-world problems in energy trading:</p>
+    
+    <ul>
+        <li><strong>Connects to Modo Energy's Day-Ahead-Market API</strong> for real-time energy pricing data</li>
+        <li><strong>Uses SmolAgents LLM + custom tools</strong> to analyze energy prices and market conditions</li>
+        <li><strong>Provides actionable insights</strong> telling storage owners exactly when to charge, when to discharge, and what the cycle profit looks like</li>
+        <li><strong>Chat UI interface</strong> for natural language interaction with complex energy data</li>
+        <li><strong>Phoenix dashboard integration</strong> streams every tool call and model decision for easy debugging</li>
+    </ul>
+
+    <h2>Technical Implementation</h2>
+    <p>Building this agent involved several key technical decisions:</p>
+    
+    <h3>SmolAgents Framework</h3>
+    <p>I chose SmolAgents for its lightweight approach to building LLM-powered agents. It provided the perfect balance between functionality and simplicity for this project.</p>
+
+    <h3>Custom Tool Development</h3>
+    <p>Created specialized tools for:</p>
+    <ul>
+        <li>API integration with Modo Energy's pricing feeds</li>
+        <li>Battery optimization calculations</li>
+        <li>Profit analysis and reporting</li>
+        <li>Market condition assessment</li>
+    </ul>
+
+    <h3>Observability with Phoenix</h3>
+    <p>Integrated Phoenix tracing to monitor every decision the agent makes. This transparency is crucial when dealing with financial trading decisions.</p>
+
+    <blockquote>
+        "Conversational chatbots were just the beginning; agents turn 'nice answers' into actions."
+    </blockquote>
+
+    <h2>Why I'm Excited</h2>
+    <p>After seeing this work on a real dataset, I'm re-thinking how AI can slot into every workflow I touch. The ability to have natural conversations about complex energy market data and get actionable trading recommendations feels transformative.</p>
+
+    <p>This project demonstrates that agents aren't just fancy chatbots—they're tools that can understand context, use specialized tools, and provide real business value.</p>
+
+    <h2>Key Learnings</h2>
+    <ol>
+        <li><strong>Tool Design Matters</strong>: The quality of your custom tools directly impacts agent performance</li>
+        <li><strong>Observability is Critical</strong>: When dealing with financial data, you need to see every decision step</li>
+        <li><strong>Domain Knowledge Integration</strong>: Combining LLM capabilities with industry-specific logic creates powerful solutions</li>
+        <li><strong>User Experience Focus</strong>: A chat interface makes complex data accessible to non-technical users</li>
+    </ol>
+
+    <h2>What's Next</h2>
+    <p>This feels like chapter 1 of something bigger. I'm keen to keep learning, ship more agent-powered helpers, and—hopefully—make software a lot more fun (and useful!) along the way.</p>
+
+    <p>The intersection of AI agents and specialized domains like energy trading opens up endless possibilities. I'm excited to explore more applications and continue pushing the boundaries of what's possible.</p>
+
+    <h3>Try It Yourself</h3>
+    <p>If you're curious about the implementation details or want to experiment with the code, check out the <a href="https://github.com/NavishaShetty/BESS-Coding-Agent" target="_blank">GitHub repository</a>. I'd love to hear your thoughts or ideas for improvement!</p>
+</div>

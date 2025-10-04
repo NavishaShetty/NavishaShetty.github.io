@@ -1,4 +1,5 @@
-// Portfolio Application JavaScript
+// Portfolio Application JavaScript File
+
 class PortfolioApp {
     constructor() {
         this.currentRoute = 'about';
@@ -8,14 +9,118 @@ class PortfolioApp {
         this.currentBlogPost = null;
         this.viewingBlogPost = false;
         
+        // Data storage for content loaded from JSON
+        this.projects = [];
+        this.aboutData = {};
+        this.goals = [];
+        
         this.init();
     }
 
     init() {
         this.setupEventListeners();
-        this.loadBlogPosts();
+        this.loadAllContent(); 
         this.handleInitialRoute();
         this.initializeFeatherIcons();
+    }
+
+    // Load all content from JSON files
+    async loadAllContent() {
+        try {
+            await Promise.all([
+                this.loadProjects(),
+                this.loadAboutData(),
+                this.loadGoals(),
+                this.loadBlogPosts()
+            ]);
+            this.renderAboutSection(); 
+        } catch (error) {
+            console.error('Error loading content:', error);
+        }
+    }
+
+    async loadProjects() {
+        try {
+            const response = await fetch('content/projects.json');
+            this.projects = await response.json();
+            this.renderProjects();
+        } catch (error) {
+            console.error('Error loading projects:', error);
+        }
+    }
+
+    async loadAboutData() {
+        try {
+            const response = await fetch('content/about.json');
+            this.aboutData = await response.json();
+        } catch (error) {
+            console.error('Error loading about data:', error);
+        }
+    }
+
+    async loadGoals() {
+        try {
+            const response = await fetch('content/goals.json');
+            this.goals = await response.json();
+            this.renderGoals();
+        } catch (error) {
+            console.error('Error loading goals:', error);
+        }
+    }
+
+    renderAboutSection() {
+        const heroTitle = document.querySelector('.hero-title');
+        const heroDescription = document.querySelector('.hero-description');
+        
+        if (heroTitle && this.aboutData.title) {
+            heroTitle.textContent = this.aboutData.title;
+        }
+        if (heroDescription && this.aboutData.description) {
+            heroDescription.textContent = this.aboutData.description;
+        }
+    }
+
+    renderProjects() {
+        const projectsList = document.querySelector('.projects-list');
+        if (!projectsList || this.projects.length === 0) return;
+
+        const projectsHTML = this.projects.map(project => `
+            <div class="project-card">
+                <h3 class="project-name">${this.escapeHtml(project.name)}</h3>
+                <p class="project-description">${this.escapeHtml(project.description)}</p>
+                <div class="project-buttons">
+                    ${project.github ? `
+                        <a href="${project.github}" class="btn btn-primary" target="_blank">
+                            <i data-feather="github"></i>
+                            GitHub
+                        </a>
+                    ` : ''}
+                    ${project.showBlogButton && project.blog ? `
+                        <a href="#blog/${project.blog}" class="btn btn-secondary" onclick="event.preventDefault(); portfolioApp.openBlogPost('${project.blog}')">
+                            <i data-feather="edit"></i>
+                            Blog
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+
+        projectsList.innerHTML = projectsHTML;
+        this.initializeFeatherIcons();
+    }
+
+    renderGoals() {
+        const goalsList = document.querySelector('.goals-list');
+        if (!goalsList || this.goals.length === 0) return;
+
+        const goalsHTML = this.goals.map(goal => `
+            <div class="goal-item">
+                <h3 class="goal-title">${this.escapeHtml(goal.title)}</h3>
+                <p class="goal-description">${this.escapeHtml(goal.description)}</p>
+            </div>
+        `).join('');
+
+        goalsList.innerHTML = goalsHTML;
     }
 
     setupEventListeners() {
@@ -64,11 +169,9 @@ class PortfolioApp {
         const hash = window.location.hash.substring(1);
         const validRoutes = ['about', 'blog', 'resume'];
         
-        // Check if it's a blog post route (blog/post-id)
         if (hash.startsWith('blog/')) {
             const postId = hash.substring(5);
             this.navigateTo('blog', false);
-            // Wait a bit longer to ensure blog posts are loaded
             setTimeout(() => {
                 this.openBlogPost(postId);
             }, 500);
@@ -82,26 +185,19 @@ class PortfolioApp {
     navigateTo(route, updateHistory = true) {
         if (route === this.currentRoute && !this.viewingBlogPost) return;
 
-        // Reset blog post view when navigating to different sections
         if (route !== 'blog') {
             this.viewingBlogPost = false;
             this.currentBlogPost = null;
         }
 
-        // Update URL
         if (updateHistory) {
             history.pushState({ route }, '', `#${route}`);
         }
 
-        // Update navigation
         this.updateNavigation(route);
-        
-        // Show section with animation
         this.showSection(route);
-        
         this.currentRoute = route;
 
-        // Load content if needed
         if (route === 'blog') {
             if (this.blogPosts.length === 0) {
                 this.loadBlogPosts();
@@ -114,13 +210,11 @@ class PortfolioApp {
     handleRouteChange() {
         const hash = window.location.hash.substring(1) || 'about';
         
-        // Check if it's a blog post route
         if (hash.startsWith('blog/')) {
             const postId = hash.substring(5);
             if (this.currentRoute !== 'blog') {
                 this.navigateTo('blog', false);
             }
-            // Wait a bit longer to ensure blog posts are loaded
             setTimeout(() => {
                 this.openBlogPost(postId);
             }, 500);
@@ -141,18 +235,14 @@ class PortfolioApp {
     }
 
     showSection(route) {
-        // Hide all sections
         document.querySelectorAll('.section').forEach(section => {
             section.classList.remove('active');
         });
 
-        // Show target section with delay for smooth transition
         setTimeout(() => {
             const targetSection = document.getElementById(`${route}-section`);
             if (targetSection) {
                 targetSection.classList.add('active');
-                
-                // Scroll to top
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
@@ -239,7 +329,6 @@ class PortfolioApp {
 
         let paginationHTML = '<div class="pagination-controls">';
         
-        // Previous button
         if (this.currentPage > 1) {
             paginationHTML += `
                 <button class="btn btn-secondary" onclick="portfolioApp.changePage(${this.currentPage - 1})">
@@ -248,7 +337,6 @@ class PortfolioApp {
             `;
         }
 
-        // Page numbers
         for (let i = 1; i <= totalPages; i++) {
             const isActive = i === this.currentPage ? 'btn-primary' : 'btn-secondary';
             paginationHTML += `
@@ -258,7 +346,6 @@ class PortfolioApp {
             `;
         }
 
-        // Next button
         if (this.currentPage < totalPages) {
             paginationHTML += `
                 <button class="btn btn-secondary" onclick="portfolioApp.changePage(${this.currentPage + 1})">
@@ -275,7 +362,6 @@ class PortfolioApp {
         this.currentPage = page;
         this.renderBlogPosts();
         
-        // Scroll to blog posts
         document.getElementById('blog-posts').scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -283,7 +369,6 @@ class PortfolioApp {
     }
 
     openBlogPost(postId) {
-        // If blog posts haven't been loaded yet, load them first
         if (this.blogPosts.length === 0) {
             this.loadBlogPosts().then(() => {
                 this.openBlogPost(postId);
@@ -298,27 +383,22 @@ class PortfolioApp {
             return;
         }
 
-        // Update URL to include blog post
         history.pushState({ route: 'blog', postId }, '', `#blog/${postId}`);
 
         this.currentBlogPost = post;
         this.viewingBlogPost = true;
 
-        // Hide blog list view
         document.getElementById('blog-list-view').style.display = 'none';
         
-        // Show blog post view
         const blogPostView = document.getElementById('blog-post-view');
         blogPostView.style.display = 'block';
 
-        // Populate blog post content
         document.getElementById('blog-post-title').textContent = post.title;
         document.getElementById('blog-post-meta').innerHTML = `
             <span>Published on ${this.formatDate(post.date)}</span>
             ${post.author ? `<span> • By ${this.escapeHtml(post.author)}</span>` : ''}
         `;
         
-        // Render tags
         const tagsContainer = document.getElementById('blog-post-tags');
         if (post.tags && post.tags.length > 0) {
             tagsContainer.innerHTML = post.tags.map(tag => 
@@ -328,231 +408,56 @@ class PortfolioApp {
             tagsContainer.innerHTML = '';
         }
 
-        // Render content
-        document.getElementById('blog-post-content').innerHTML = this.renderBlogPostContent(post);
+        this.loadBlogPostContent(post);
 
-        // Re-initialize Feather icons for the new content
         this.initializeFeatherIcons();
 
-        // Scroll to top
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
+    }
+
+    async loadBlogPostContent(post) {
+        const contentContainer = document.getElementById('blog-post-content');
+        
+        if (!post.contentFile) {
+            contentContainer.innerHTML = '<p>Content file not specified for this post.</p>';
+            return;
+        }
+
+        try {
+            const response = await fetch(post.contentFile);
+            if (!response.ok) {
+                throw new Error('Failed to load blog content');
+            }
+            const content = await response.text();
+            contentContainer.innerHTML = content;
+            this.initializeFeatherIcons();
+        } catch (error) {
+            console.error('Error loading blog content:', error);
+            contentContainer.innerHTML = `
+                <div class="blog-content">
+                    <p>Sorry, we couldn't load this blog post content. Please try again later.</p>
+                    <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
+                </div>
+            `;
+        }
     }
 
     showBlogList() {
         this.viewingBlogPost = false;
         this.currentBlogPost = null;
         
-        // Update URL
         history.pushState({ route: 'blog' }, '', '#blog');
 
-        // Show blog list view
         document.getElementById('blog-list-view').style.display = 'block';
-        
-        // Hide blog post view
         document.getElementById('blog-post-view').style.display = 'none';
 
-        // Scroll to top
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
-    }
-
-    renderBlogPostContent(post) {
-        // Special content for BESS Coding Agent post
-        if (post.id === 'bess-coding-agent-journey') {
-            return `
-                <div class="blog-content">
-                    <h2>The Journey Begins</h2>
-                    <p>Just wrapped up the DeepLearning.ai "Building & Evaluating AI Agents" course, and I'm excited to share what I learned by building something real.</p>
-                    
-                    <p>Agents feel like the next inflection point: they don't just answer questions, they use tools to get real work done. After the course, I pointed that power at something from my day-job—battery energy storage trading—and the result is <strong>BESS-Coding-Agent</strong>.</p>
-    
-                    <h2>What It Does</h2>
-                    <p>The BESS Coding Agent is designed to solve real-world problems in energy trading:</p>
-                    
-                    <ul>
-                        <li><strong>Connects to Modo Energy's Day-Ahead-Market API</strong> for real-time energy pricing data</li>
-                        <li><strong>Uses SmolAgents LLM + custom tools</strong> to analyze energy prices and market conditions</li>
-                        <li><strong>Provides actionable insights</strong> telling storage owners exactly when to charge, when to discharge, and what the cycle profit looks like</li>
-                        <li><strong>Chat UI interface</strong> for natural language interaction with complex energy data</li>
-                        <li><strong>Phoenix dashboard integration</strong> streams every tool call and model decision for easy debugging</li>
-                    </ul>
-    
-                    <h2>Technical Implementation</h2>
-                    <p>Building this agent involved several key technical decisions:</p>
-                    
-                    <h3>SmolAgents Framework</h3>
-                    <p>I chose SmolAgents for its lightweight approach to building LLM-powered agents. It provided the perfect balance between functionality and simplicity for this project.</p>
-    
-                    <h3>Custom Tool Development</h3>
-                    <p>Created specialized tools for:</p>
-                    <ul>
-                        <li>API integration with Modo Energy's pricing feeds</li>
-                        <li>Battery optimization calculations</li>
-                        <li>Profit analysis and reporting</li>
-                        <li>Market condition assessment</li>
-                    </ul>
-    
-                    <h3>Observability with Phoenix</h3>
-                    <p>Integrated Phoenix tracing to monitor every decision the agent makes. This transparency is crucial when dealing with financial trading decisions.</p>
-    
-                    <blockquote>
-                        "Conversational chatbots were just the beginning; agents turn 'nice answers' into actions."
-                    </blockquote>
-    
-                    <h2>Why I'm Excited</h2>
-                    <p>After seeing this work on a real dataset, I'm re-thinking how AI can slot into every workflow I touch. The ability to have natural conversations about complex energy market data and get actionable trading recommendations feels transformative.</p>
-    
-                    <p>This project demonstrates that agents aren't just fancy chatbots—they're tools that can understand context, use specialized tools, and provide real business value.</p>
-    
-                    <h2>Key Learnings</h2>
-                    <ol>
-                        <li><strong>Tool Design Matters</strong>: The quality of your custom tools directly impacts agent performance</li>
-                        <li><strong>Observability is Critical</strong>: When dealing with financial data, you need to see every decision step</li>
-                        <li><strong>Domain Knowledge Integration</strong>: Combining LLM capabilities with industry-specific logic creates powerful solutions</li>
-                        <li><strong>User Experience Focus</strong>: A chat interface makes complex data accessible to non-technical users</li>
-                    </ol>
-    
-                    <h2>What's Next</h2>
-                    <p>This feels like chapter 1 of something bigger. I'm keen to keep learning, ship more agent-powered helpers, and—hopefully—make software a lot more fun (and useful!) along the way.</p>
-    
-                    <p>The intersection of AI agents and specialized domains like energy trading opens up endless possibilities. I'm excited to explore more applications and continue pushing the boundaries of what's possible.</p>
-    
-                    <h3>Try It Yourself</h3>
-                    <p>If you're curious about the implementation details or want to experiment with the code, check out the <a href="https://github.com/NavishaShetty/BESS-Coding-Agent" target="_blank">GitHub repository</a>. I'd love to hear your thoughts or ideas for improvement!</p>
-                    
-                    <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
-                </div>
-            `;
-        }
-    
-        // Special content for Flipped Interaction Pattern post
-        if (post.id === 'flipped-interaction-pattern') {
-            return `
-                <div class="blog-content">
-                    <h2>What is the Flipped Interaction Pattern?</h2>
-                    <p>Have you ever walked into a doctor's office and felt confused about how to explain your problem? Instead of you rambling about symptoms, what if the doctor asked you specific questions to understand your issue better?</p>
-                    
-                    <p>This is exactly what the <strong>Flipped Interaction Pattern</strong> does in AI conversations!</p>
-    
-                    <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                        <p><strong>Simple Definition:</strong> The Flipped Interaction Pattern is a prompt engineering technique where instead of you telling AI what to do, you ask the AI to interview YOU by asking questions until it has enough information to help you properly.</p>
-                    </div>
-    
-                    <h2>Why This Pattern Matters</h2>
-                    <p>Most people don't know what information AI needs to give good answers. It's like trying to order food in a foreign country - you know what you want (good food) but don't know how to communicate it effectively.</p>
-    
-                    <h3>Real-World Success Story</h3>
-                    <p>A healthcare startup created an AI symptom checker using this pattern. Instead of users typing "I feel sick," the AI acted like an experienced nurse asking targeted questions.</p>
-    
-                    <p><strong>Results:</strong></p>
-                    <ul>
-                        <li>89% more accurate symptom assessment</li>
-                        <li>Users completed consultations 3x faster</li>
-                        <li>Identified serious cases that users initially described as "just feeling off"</li>
-                        <li>Rural clinic visits reduced by 40% for non-emergency cases</li>
-                    </ul>
-    
-                    <h2>Core Concepts</h2>
-    
-                    <h3>1. Role Reversal & Interview Dynamic</h3>
-                    <p>In normal AI conversations, humans ask questions and AI answers. But with Flipped Interaction, the AI becomes like an interviewer who asks strategic questions to understand your needs better.</p>
-    
-                    <h3>2. Goal-Directed Questioning</h3>
-                    <p>The AI doesn't ask random questions. It asks purposeful questions that build toward a specific goal. Each question gets you closer to the solution you need.</p>
-    
-                    <h2>Practical Examples</h2>
-                    <p>I've created an in-depth tutorial with real examples showing how this pattern works in scenarios like apartment hunting, where the AI systematically interviews you to understand your needs.</p>
-    
-                    <div style="background: #fff8e1; border: 2px solid #ffa726; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center;">
-                        <h3>📚 Want to Learn More?</h3>
-                        <p>This blog post is just a preview! I've created a comprehensive interactive tutorial with:</p>
-                        <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
-                            <li>Detailed examples and case studies</li>
-                            <li>Interactive quiz to test your understanding</li>
-                            <li>Hands-on exercises to practice</li>
-                            <li>Tips for creating your own prompts</li>
-                        </ul>
-                        <div style="margin: 20px 0;">
-                            <a href="blog/flipped-interaction-pattern.html" target="_blank" style="display: inline-block; background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin: 10px;">
-                                📖 Read Full Tutorial
-                            </a>
-                            <a href="blog/flipped-interaction-pattern.html#quiz-section" target="_blank" style="display: inline-block; background: #48bb78; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin: 10px;">
-                                🎯 Take Interactive Quiz
-                            </a>
-                        </div>
-                    </div>
-    
-                    <h2>Key Takeaways</h2>
-                    <p>The Flipped Interaction Pattern is like having a smart conversation partner who knows exactly what questions to ask to help you. Instead of you guessing what information to provide, the AI guides the conversation systematically.</p>
-    
-                    <p>This pattern works because:</p>
-                    <ul>
-                        <li>It reduces information overload</li>
-                        <li>Ensures nothing important is missed</li>
-                        <li>Builds understanding step by step</li>
-                        <li>Adapts to your specific situation</li>
-                        <li>Leads to better, more personalized results</li>
-                    </ul>
-    
-                    <p>Whether you're planning a trip, choosing a career path, diagnosing a problem, or making any complex decision, letting AI interview you often leads to much better outcomes than trying to explain everything at once.</p>
-    
-                    <blockquote>
-                        "The next time you need AI help with something complex, try saying: 'Ask me questions until you have enough information to help me with [your goal].' You might be surprised by how much better the results are!"
-                    </blockquote>
-                    
-                    <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
-                </div>
-            `;
-        }
-        
-        // Default content for other posts
-        return `
-            <div class="blog-content">
-                <h2>Introduction</h2>
-                <p>${this.escapeHtml(post.excerpt)}</p>
-                
-                <h2>Main Content</h2>
-                <p>This is where the full blog post content would appear. In a real application, you would:</p>
-                
-                <ul>
-                    <li>Store full content in separate markdown or HTML files</li>
-                    <li>Fetch the content via AJAX when a post is opened</li>
-                    <li>Use a content management system or static site generator</li>
-                    <li>Parse markdown to HTML for rich formatting</li>
-                </ul>
-    
-                <blockquote>
-                    "${this.escapeHtml(post.excerpt)}"
-                </blockquote>
-    
-                <h3>Key Points</h3>
-                <p>Here are some key takeaways from this post:</p>
-                
-                <ol>
-                    <li>Understanding the core concepts</li>
-                    <li>Practical implementation strategies</li>
-                    <li>Best practices and common pitfalls</li>
-                    <li>Future considerations and next steps</li>
-                </ol>
-    
-                <h3>Code Example</h3>
-                <pre><code>// Example code snippet
-    function exampleFunction() {
-        console.log('This is a sample code block');
-        return 'You can add syntax highlighting here';
-    }</code></pre>
-    
-                <h2>Conclusion</h2>
-                <p>Thank you for reading this blog post. In a real implementation, this content would be much more comprehensive and would include the actual article content, images, and interactive elements.</p>
-                
-                <p><em>Published on ${this.formatDate(post.date)} • Tagged: ${post.tags ? post.tags.join(', ') : 'No tags'}</em></p>
-            </div>
-        `;
     }
 
     formatDate(dateString) {
@@ -571,13 +476,11 @@ class PortfolioApp {
     }
 
     initializeFeatherIcons() {
-        // Initialize Feather icons after DOM content is loaded
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
     }
 
-    // Utility method to handle smooth scrolling for internal links
     smoothScrollTo(targetId) {
         const target = document.getElementById(targetId);
         if (target) {
@@ -588,19 +491,15 @@ class PortfolioApp {
         }
     }
 
-    // Method to handle contact form submissions (if added later)
     handleContactForm(formData) {
-        // This would handle contact form submission
         console.log('Contact form submitted:', formData);
     }
 
-    // Method to toggle theme (if dark mode is added later)
     toggleTheme() {
         document.body.classList.toggle('dark-theme');
         localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
     }
 
-    // Method to load saved theme preference
     loadThemePreference() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
@@ -614,9 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.portfolioApp = new PortfolioApp();
 });
 
-// Additional utility functions for enhanced functionality
-
-// Lazy loading for images (if added later)
+// Additional utility functions
 function setupLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
     const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -633,7 +530,6 @@ function setupLazyLoading() {
     images.forEach(img => imageObserver.observe(img));
 }
 
-// Scroll-triggered animations
 function setupScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -648,13 +544,11 @@ function setupScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observe elements that should animate on scroll
     document.querySelectorAll('.project-card, .goal-item, .blog-post').forEach(el => {
         observer.observe(el);
     });
 }
 
-// Performance monitoring
 function trackPerformance() {
     if ('performance' in window) {
         window.addEventListener('load', () => {
@@ -664,13 +558,11 @@ function trackPerformance() {
     }
 }
 
-// Initialize additional features
 document.addEventListener('DOMContentLoaded', () => {
     setupScrollAnimations();
     trackPerformance();
 });
 
-// Service Worker registration for PWA capabilities (if added later)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -683,7 +575,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Export for module usage if needed
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PortfolioApp;
 }
