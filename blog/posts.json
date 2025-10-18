@@ -1,5 +1,14 @@
 [
   {
+    "id": "llm-finetuning-kubernetes",
+    "title": "From Curious Student to LLM Fine-Tuner: Building a Production-Grade AI Pipeline on Kubernetes",
+    "date": "2025-10-17",
+    "excerpt": "A journey through GPU infrastructure, QLoRA fine-tuning, and real-world MLOps. This post details the end-to-end process of fine-tuning TinyLlama on Kubernetes.",
+    "contentFile": "blog/posts/llm-finetuning-kubernetes.html",
+    "tags": ["Kubernetes", "MLOps", "LLM", "Fine-Tuning", "QLoRA", "AWS"],
+    "author": "Navisha Shetty"
+  },
+  {
     "id": "bess-coding-agent-journey",
     "title": "Building BESS Coding Agent: From DeepLearning.ai Course to Real-World Energy Trading",
     "date": "2025-06-24",
@@ -13,8 +22,17 @@
     "title": "The Flipped Interaction Pattern: When AI Becomes the Interviewer",
     "excerpt": "An educational guide exploring the Flipped Interaction Pattern in prompt engineering, featuring comprehensive examples, real-world applications, and interactive exercises to master AI conversation techniques.",
     "date": "2025-09-15",
-    "contentFile": "blog/posts/flipped-interaction-preview.html",
+    "contentFile": "blog/posts/flipped-interaction-pattern.html",
     "author": "Navisha Shetty", 
     "tags": ["AI", "Prompt Engineering", "Education", "Interactive", "NLP"]
+  },
+  {
+    "id": "flipped-interaction-preview",
+    "title": "Preview: The Flipped Interaction Pattern",
+    "excerpt": "A sneak peek into the Flipped Interaction Pattern, a powerful prompt engineering technique. This preview introduces the core concepts and links to the full interactive tutorial.",
+    "date": "2025-09-14",
+    "contentFile": "blog/posts/flipped-interaction-preview.html",
+    "author": "Navisha Shetty",
+    "tags": ["AI", "Prompt Engineering", "Preview"]
   }
 ]
