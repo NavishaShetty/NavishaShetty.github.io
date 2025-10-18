@@ -96,7 +96,7 @@ class PortfolioApp {
                         </a>
                     ` : ''}
                     ${project.showBlogButton && project.blog ? `
-                        <a href="#blog/${project.blog}" class="btn btn-secondary" onclick="event.preventDefault(); portfolioApp.openBlogPost('${project.blog}')">
+                        <a href="#blog/${project.blog}" class="btn btn-secondary" onclick="event.preventDefault(); portfolioApp.navigateTo('blog'); setTimeout(() => portfolioApp.openBlogPost('${project.blog}'), 100);">
                             <i data-feather="edit"></i>
                             Blog
                         </a>

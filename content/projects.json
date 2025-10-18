@@ -1,5 +1,12 @@
 [
   {
+    "name": "LLM Fine-Tuning using QLoRA on Kubernetes",
+    "description": "An end-to-end MLOps pipeline for fine-tuning TinyLlama on Kubernetes using QLoRA and the Alpaca dataset. This project automates model training and deployment with a FastAPI inference service, showcasing production-grade practices for LLMs on GPU infrastructure.",
+    "github": "https://github.com/NavishaShetty/LLM-finetuning-on-kubernetes",
+    "blog": "llm-finetuning-kubernetes",
+    "showBlogButton": true
+  },
+  {
     "name": "BESS Coding Agent",
     "description": "An intelligent LLM-based ReAct coding agent using SmolAgents framework for Battery Energy Storage Systems (BESS) trading optimization. Features real-time Day-Ahead Market data analysis, chat UI, and Phoenix observability dashboard.",
     "github": "https://github.com/NavishaShetty/BESS-Coding-Agent",
