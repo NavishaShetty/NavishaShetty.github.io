@@ -1,6 +1,6 @@
 # Portfolio Website - Easy Maintenance Guide
 
-## 📋 Quick Reference: Where to Edit What
+## Quick Reference: Where to Edit What
 
 | What You Want to Change | File to Edit | Example |
 |------------------------|--------------|---------|
@@ -13,9 +13,9 @@
 
 ---
 
-## 🎯 How to Make Common Changes
+## How to Make Common Changes
 
-### ✅ Adding a New Project
+### Adding a New Project
 
 **File:** `content/projects.json`
 
@@ -41,7 +41,7 @@
 
 ---
 
-### ✅ Editing Your About Section
+### Editing About Section
 
 **File:** `content/about.json`
 
@@ -59,7 +59,7 @@ Simply edit the text:
 
 ---
 
-### ✅ Adding/Editing Goals
+### Adding/Editing Goals
 
 **File:** `content/goals.json`
 
@@ -78,7 +78,7 @@ Goals appear in the order listed.
 
 ---
 
-### ✅ Adding a New Blog Post
+### Adding a New Blog Post
 
 **Two types of blog posts:**
 
@@ -92,7 +92,7 @@ For most blog posts, use this approach:
 Create a new file: `blog/posts/your-post-name.html`
 
 ```html
-<!-- Your Blog Post Content -->
+<!-- Blog Post Content -->
 <div class="blog-content">
     <h2>First Section</h2>
     <p>Your content here...</p>
@@ -155,13 +155,13 @@ When clicked, this will navigate to the full standalone page instead of loading 
 
 ---
 
-### ✅ Editing Resume
+### Editing Resume
 
 **File:** `index.html`
 
 The resume section is still in `index.html` starting at:
 ```html
-<!-- Resume Section - NO CHANGES -->
+<!-- Resume Section -->
 <section id="resume-section" class="section">
 ```
 
@@ -203,16 +203,16 @@ NavishaShetty.github.io/
 
 ## Deployment (GitHub Pages)
 
-Your portfolio is a **static website** - just HTML, CSS, and JavaScript files. GitHub Pages serves these directly.
+This portfolio is a **static website** - just HTML, CSS, and JavaScript files. GitHub Pages serves these directly.
 
 ### What You Need:
-- Just push your code to GitHub
+- Just push code to GitHub
 - Enable GitHub Pages in repository settings
 - Access at: `https://navishashetty.github.io`
 
 ---
 
-## 🛠️ Testing Locally
+## Testing Locally
 
 ### Option 1: Python (Simplest)
 ```bash
