@@ -1,10 +1,10 @@
 [
   {
     "id": "llm-finetuning-kubernetes",
-    "title": "From Curious Student to LLM Fine-Tuner: Building a Production-Grade AI Pipeline on Kubernetes",
+    "title": "Fine-Tuning LLMs at Scale: A Kubernetes-Powered MLOps Pipeline",
     "date": "2025-10-17",
     "excerpt": "A journey through GPU infrastructure, QLoRA fine-tuning, and real-world MLOps. This post details the end-to-end process of fine-tuning TinyLlama on Kubernetes.",
-    "contentFile": "blog/posts/llm-finetuning-kubernetes.html",
+    "externalLink": "blog/posts/llm-finetuning-kubernetes.html",
     "tags": ["Kubernetes", "MLOps", "LLM", "Fine-Tuning", "QLoRA", "AWS"],
     "author": "Navisha Shetty"
   },

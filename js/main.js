@@ -383,6 +383,11 @@ class PortfolioApp {
             return;
         }
 
+        if (post.externalLink) {
+            window.location.href = post.externalLink;
+            return;
+        }
+
         history.pushState({ route: 'blog', postId }, '', `#blog/${postId}`);
 
         this.currentBlogPost = post;
