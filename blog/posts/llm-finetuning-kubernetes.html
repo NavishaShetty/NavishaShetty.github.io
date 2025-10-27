@@ -410,6 +410,21 @@
             transform: translateY(-2px);
         }
         
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #5a67d8;
+        }
+        
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8em;
@@ -431,11 +446,18 @@
             .skill-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
-<body>
+<body id="top">
     <div class="container">
+        <a href="../../index.html" class="back-link">← Back to Portfolio</a>
+        
         <header>
             <h1>Fine-Tuning LLMs at Scale: A Production MLOps Pipeline</h1>
             <p>End-to-end infrastructure design, GPU optimization, and fault-tolerant training</p>
@@ -666,29 +688,29 @@ designed for parallel computation...</pre>
 │   Kubernetes Cluster (AWS G4DN)         │
 ├─────────────────────────────────────────┤
 │                                         │
-│  ┌─────────────────────────────────┐   │
-│  │   Training Job (QLoRA)          │   │
-│  │   - TinyLlama Base Model        │   │
-│  │   - Alpaca Dataset (52K samples)│   │
-│  │   - Saves to EBS Volume         │   │
-│  │   - Pushes to HuggingFace       │   │
-│  └─────────────────────────────────┘   │
+│  ┌──────────────────────────────────┐   │
+│  │   Training Job (QLoRA)           │   │
+│  │   - TinyLlama Base Model         │   │
+│  │   - Alpaca Dataset (52K samples) │   │
+│  │   - Saves to EBS Volume          │   │
+│  │   - Pushes to HuggingFace        │   │
+│  └──────────────────────────────────┘   │
 │                                         │
-│  ┌─────────────────┐ ┌───────────────┐ │
-│  │  Base Model     │ │ Fine-Tuned    │ │
-│  │  Inference      │ │ Inference     │ │
-│  │  (FastAPI)      │ │ (FastAPI)     │ │
-│  └─────────────────┘ └───────────────┘ │
+│  ┌─────────────────┐ ┌───────────────┐  │
+│  │  Base Model     │ │ Fine-Tuned    │  │
+│  │  Inference      │ │ Inference     │  │
+│  │  (FastAPI)      │ │ (FastAPI)     │  │
+│  └─────────────────┘ └───────────────┘  │
 │                                         │
-│  ┌─────────────────┐ ┌───────────────┐ │
-│  │  Base Model UI  │ │ Fine-Tuned UI │ │
-│  │  (Nginx)        │ │ (Nginx)       │ │
-│  └─────────────────┘ └───────────────┘ │
+│  ┌─────────────────┐ ┌───────────────┐  │
+│  │  Base Model UI  │ │ Fine-Tuned UI │  │
+│  │  (Nginx)        │ │ (Nginx)       │  │
+│  └─────────────────┘ └───────────────┘  │
 │                                         │
-│  ┌─────────────────────────────────┐   │
-│  │   NVIDIA Device Plugin          │   │
-│  │   (GPU Resource Management)     │   │
-│  └─────────────────────────────────┘   │
+│  ┌──────────────────────────────────┐   │
+│  │   NVIDIA Device Plugin           │   │
+│  │   (GPU Resource Management)      │   │
+│  └──────────────────────────────────┘   │
 └─────────────────────────────────────────┘</pre>
 
             <h3>Technology Stack</h3>
@@ -814,6 +836,11 @@ designed for parallel computation...</pre>
             <p>The intersection of ML engineering and infrastructure design is where I find the most excitement. Building systems that are not just functional, but robust, scalable, and cost-effective—that's the challenge that drives me forward.</p>
 
         </article>
+
+        <div class="nav-links" style="display: flex; justify-content: space-between; margin: 40px 0;">
+            <a href="../../index.html" style="display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">← Back to Portfolio</a>
+            <a href="#top" style="display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">↑ Back to Top</a>
+        </div>
 
         <footer>
             <p><strong>Interested in discussing MLOps, Kubernetes, or LLM infrastructure?</strong></p>
