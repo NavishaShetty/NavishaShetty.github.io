@@ -410,21 +410,6 @@
             transform: translateY(-2px);
         }
         
-        .back-link {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        
-        .back-link:hover {
-            background: #5a67d8;
-        }
-        
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8em;
@@ -446,17 +431,12 @@
             .skill-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .nav-links {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
 <body id="top">
     <div class="container">
-        <a href="../../index.html" class="back-link">← Back to Portfolio</a>
+        <a href="../../index.html#blog" style="display: inline-block; margin: 20px 40px; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">← Back to Blog Posts</a>
         
         <header>
             <h1>Fine-Tuning LLMs at Scale: A Production MLOps Pipeline</h1>
