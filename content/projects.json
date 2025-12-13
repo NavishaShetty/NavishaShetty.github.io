@@ -1,5 +1,12 @@
 [
   {
+    "name": "RAG-Enhanced Multi-Agent Code Generation",
+    "description": "A Reinforcement Learning orchestrator that coordinates four LLM agents (Planner, Coder, Tester, Debugger) for automated code generation. Features Q-Learning + Thompson Sampling, RAG integration with ChromaDB, and a Streamlit UI for real-time visualization.",
+    "github": "https://github.com/NavishaShetty/RAG-Enhanced-Multi-Agent-Code-Generation-System-Using-RL",
+    "blog": "rag-multi-agent-code-gen",
+    "showBlogButton": true
+  },
+  {
     "name": "LLM Fine-Tuning using QLoRA on Kubernetes",
     "description": "An end-to-end MLOps pipeline for fine-tuning TinyLlama on Kubernetes using QLoRA and the Alpaca dataset. This project automates model training and deployment with a FastAPI inference service, showcasing production-grade practices for LLMs on GPU infrastructure.",
     "github": "https://github.com/NavishaShetty/LLM-finetuning-on-kubernetes",
