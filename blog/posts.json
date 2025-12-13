@@ -1,5 +1,14 @@
 [
   {
+    "id": "rag-multi-agent-code-gen",
+    "title": "Building a RAG-Enhanced Multi-Agent Code Generation System with Reinforcement Learning",
+    "date": "2025-12-12",
+    "excerpt": "How I built an intelligent code generation system that uses Reinforcement Learning to orchestrate multiple LLM agents, enhanced with RAG for improved code quality. A deep dive into Q-Learning, Thompson Sampling, and multi-agent coordination.",
+    "externalLink": "blog/posts/rag-multi-agent-code-gen.html",
+    "tags": ["Reinforcement Learning", "RAG", "Multi-Agent", "LLM", "Prompt Engineering"],
+    "author": "Navisha Shetty"
+  },
+  {
     "id": "llm-finetuning-kubernetes",
     "title": "Fine-Tuning LLMs at Scale: A Kubernetes-Powered MLOps Pipeline",
     "date": "2025-10-17",

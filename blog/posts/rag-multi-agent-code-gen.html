@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG-Enhanced Multi-Agent Code Generation with Reinforcement Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.05);
+        }
+
+        header {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        /* Impact Metrics Section */
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            border-bottom: 3px solid #6366f1;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #6366f1;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Skills Showcase */
+        .skills-showcase {
+            padding: 40px;
+            background: #f8f9fa;
+            border-left: 5px solid #6366f1;
+            margin: 40px 0;
+        }
+
+        .skills-showcase h3 {
+            color: #6366f1;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .skill-icon {
+            color: #6366f1;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .skill-text {
+            flex: 1;
+        }
+
+        .skill-category {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .skill-detail {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Highlight Box Styling */
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .highlight-box h3 {
+            color: #d97706;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .highlight-box li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .highlight-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #6366f1;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        article {
+            padding: 50px 40px;
+        }
+
+        h2 {
+            color: #6366f1;
+            font-size: 2em;
+            margin: 50px 0 20px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #6366f1;
+        }
+
+        h3 {
+            color: #4f46e5;
+            font-size: 1.5em;
+            margin: 35px 0 15px 0;
+        }
+
+        h4 {
+            color: #333;
+            font-size: 1.2em;
+            margin: 25px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .callout {
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .callout strong {
+            color: #6366f1;
+        }
+
+        .callout-warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .callout-warning strong {
+            color: #d97706;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4f46e5;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #6366f1;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .comparison-table .highlight-row {
+            background: #eef2ff;
+            font-weight: 600;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-3px);
+            border-color: #6366f1;
+        }
+
+        .tech-item strong {
+            color: #6366f1;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        /* Agent Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .agent-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .agent-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .agent-number {
+            width: 40px;
+            height: 40px;
+            background: #6366f1;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin: 0 auto 15px auto;
+        }
+
+        .agent-card h4 {
+            color: #6366f1;
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .agent-card p {
+            font-size: 0.95em;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Architecture Image */
+        .architecture-section {
+            background: #f8f9fa;
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .architecture-section h3 {
+            margin-top: 0;
+        }
+
+        .architecture-section img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            margin-top: 20px;
+        }
+
+        /* State/Action Grid */
+        .rl-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .rl-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #6366f1;
+        }
+
+        .rl-box h4 {
+            color: #6366f1;
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eef2ff;
+        }
+
+        .rl-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .rl-box li {
+            margin-bottom: 8px;
+        }
+
+        .resources {
+            background: #eef2ff;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .resources h3 {
+            margin-top: 0;
+            color: #6366f1;
+        }
+
+        .resources ul {
+            margin-left: 20px;
+        }
+
+        .resources a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        blockquote {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            border-left: 5px solid #6366f1;
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 1.1em;
+            color: #4338ca;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            article {
+                padding: 30px 20px;
+            }
+
+            .impact-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 30px 20px;
+            }
+
+            .skills-showcase {
+                padding: 30px 20px;
+            }
+
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <div class="container">
+        <a href="../../index.html#blog" style="display: inline-block; margin: 20px 40px; padding: 10px 20px; background: #6366f1; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">← Back to Blog Posts</a>
+
+        <header>
+            <h1>RAG-Enhanced Multi-Agent Code Generation with Reinforcement Learning</h1>
+            <p>Orchestrating LLM agents with Q-Learning + Thompson Sampling for intelligent code generation</p>
+            <div class="badges">
+                <span class="badge">Q-Learning</span>
+                <span class="badge">Thompson Sampling</span>
+                <span class="badge">RAG + ChromaDB</span>
+                <span class="badge">Multi-Agent LLM</span>
+                <span class="badge">Streamlit UI</span>
+            </div>
+        </header>
+
+        <!-- Impact Metrics -->
+        <div class="impact-metrics">
+            <div class="metric-card">
+                <span class="metric-value">4</span>
+                <span class="metric-label">Specialized LLM Agents</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">56%</span>
+                <span class="metric-label">Fewer Steps (Learned Policy)</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">64</span>
+                <span class="metric-label">State Space Size</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Task Success Rate</span>
+            </div>
+        </div>
+
+        <article>
+            <h2>The Idea</h2>
+
+            <p>This project is a small scale demonstration of how we can coordinate multiple LLM agents using Reinforcement Learning to learn optimal orchestration strategies. Rather than building a production code generator, the goal here is to explore an interesting question: <strong>can an RL agent learn when to call which specialized agent for maximum efficiency?</strong></p>
+
+            <p>The system combines <strong>Reinforcement Learning</strong> (Q-Learning + Thompson Sampling) with <strong>Retrieval Augmented Generation (RAG)</strong> to orchestrate four specialized agents: Planner, Coder, Tester, and Debugger. The key insight is not about generating better code than existing LLMs, but about reducing unnecessary API calls while maintaining the same results.</p>
+
+            <div class="callout">
+                <strong>The Result:</strong> When comparing the learned RL policy against a fixed pipeline (which calls all four agents sequentially), both achieve 100% task success rate. However, the RL policy uses <strong>56% fewer LLM API calls</strong> by learning to skip unnecessary agents for simpler tasks. This demonstrates how RL can optimize multi-agent workflows for efficiency without sacrificing quality.
+            </div>
+
+            <!-- Project Highlights -->
+            <div class="highlight-box">
+                <h3>What This Project Demonstrates</h3>
+                <ul>
+                    <li><strong>RL for Agent Orchestration:</strong> Q-Learning + Thompson Sampling learns which agent to call based on current state</li>
+                    <li><strong>Efficiency Gains:</strong> 56% fewer API calls compared to fixed pipeline, same 100% success rate</li>
+                    <li><strong>RAG Integration:</strong> ChromaDB vector store with Python knowledge base enhances code generation</li>
+                    <li><strong>Multi-Agent Architecture:</strong> Four specialized agents with blackboard communication pattern</li>
+                    <li><strong>Interactive Demo:</strong> Streamlit UI for visualizing agent activity and comparing approaches</li>
+                </ul>
+            </div>
+
+            <h2>The Four Specialized Agents</h2>
+
+            <p>The system uses four LLM agents, each specialized for a specific phase of code generation:</p>
+
+            <div class="agent-grid">
+                <div class="agent-card">
+                    <div class="agent-number">1</div>
+                    <h4>Planner</h4>
+                    <p>Decomposes complex tasks into actionable steps and identifies requirements</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-number">2</div>
+                    <h4>Coder</h4>
+                    <p>Generates code using RAG retrieved context for best practices and patterns</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-number">3</div>
+                    <h4>Tester</h4>
+                    <p>Analyzes code for errors, edge cases, and potential improvements</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-number">4</div>
+                    <h4>Debugger</h4>
+                    <p>Fixes identified issues and optimizes code based on test feedback</p>
+                </div>
+            </div>
+
+            <div class="callout">
+                <strong>Key Insight:</strong> Rather than running all four agents in a fixed sequence, the RL orchestrator learns when each agent is actually needed, skipping unnecessary steps for simpler tasks.
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-section">
+                <h3>System Architecture</h3>
+                <p>The complete pipeline from user input to generated code:</p>
+                <img src="images/rag-multi-agent-architecture.png" alt="RAG-Enhanced Multi-Agent System Architecture">
+            </div>
+
+            <h2>The RL Formulation</h2>
+
+            <p>The orchestration problem is modeled as a <strong>Markov Decision Process (MDP)</strong>, allowing the system to learn optimal agent coordination through experience:</p>
+
+            <div class="rl-grid">
+                <div class="rl-box">
+                    <h4>State Space (64 states)</h4>
+                    <ul>
+                        <li><code>has_plan</code> - Whether a plan exists</li>
+                        <li><code>has_code</code> - Whether code has been generated</li>
+                        <li><code>has_error</code> - Whether errors were detected</li>
+                        <li><code>tests_pass</code> - Whether tests are passing</li>
+                        <li><code>iteration_bucket</code> - Current iteration (0-3)</li>
+                    </ul>
+                </div>
+                <div class="rl-box">
+                    <h4>Action Space (4 actions)</h4>
+                    <ul>
+                        <li><strong>Action 0:</strong> Invoke Planner</li>
+                        <li><strong>Action 1:</strong> Invoke Coder</li>
+                        <li><strong>Action 2:</strong> Invoke Tester</li>
+                        <li><strong>Action 3:</strong> Invoke Debugger</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Reward Function Design</h3>
+
+            <p>The reward function encourages task completion while penalizing inefficiency:</p>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Event</th>
+                    <th>Reward</th>
+                    <th>Rationale</th>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>Task Success</strong></td>
+                    <td>+10.0</td>
+                    <td>Primary goal: complete the coding task</td>
+                </tr>
+                <tr>
+                    <td>Progress (code generated)</td>
+                    <td>+0.3</td>
+                    <td>Encourage forward progress</td>
+                </tr>
+                <tr>
+                    <td>Redundant action</td>
+                    <td>-0.2</td>
+                    <td>Discourage unnecessary agent calls</td>
+                </tr>
+                <tr>
+                    <td>Step cost</td>
+                    <td>-0.1</td>
+                    <td>Prefer shorter trajectories</td>
+                </tr>
+            </table>
+
+            <h3>Thompson Sampling for Exploration</h3>
+
+            <p>Instead of simple epsilon-greedy exploration, I combined Q-Learning with <strong>Thompson Sampling</strong>:</p>
+
+            <ul>
+                <li>Maintains Beta distributions over action quality for each state</li>
+                <li>Samples from distributions to balance exploration vs exploitation</li>
+                <li>Updates distributions based on observed rewards</li>
+                <li>Results in more efficient policy discovery compared to epsilon-greedy</li>
+            </ul>
+
+            <blockquote>
+                "Thompson Sampling naturally balances exploration and exploitation by sampling from posterior distributions. Actions with uncertain values get explored more, while proven good actions get exploited."
+            </blockquote>
+
+            <h2>RAG Integration</h2>
+
+            <p>The RAG system significantly improves code quality by providing relevant context to the Coder agent:</p>
+
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Knowledge Base</strong>
+                    Curated Python patterns, best practices, standard library examples, and common algorithms
+                </div>
+                <div class="tech-item">
+                    <strong>Embeddings</strong>
+                    Sentence Transformers (all-MiniLM-L6-v2) for semantic similarity matching
+                </div>
+                <div class="tech-item">
+                    <strong>Vector Store</strong>
+                    ChromaDB for efficient similarity search with metadata filtering
+                </div>
+                <div class="tech-item">
+                    <strong>Context Injection</strong>
+                    Retrieved examples are formatted and injected into the Coder's system prompt
+                </div>
+            </div>
+
+            <div class="callout">
+                <strong>How RAG Helps:</strong> When the Coder receives a task like "implement binary search," the RAG system retrieves relevant examples showing proper implementation patterns, edge case handling, and Pythonic style. This results in higher quality generated code.
+            </div>
+
+            <h2>Key Results</h2>
+
+            <p>After training (~100k simulated episodes), the RL agent learns an efficient policy:</p>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Metric</th>
+                    <th>Fixed Pipeline</th>
+                    <th>Learned Policy</th>
+                </tr>
+                <tr>
+                    <td><strong>Success Rate</strong></td>
+                    <td>100%</td>
+                    <td>100%</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>Average Steps</strong></td>
+                    <td>4 steps</td>
+                    <td>2 steps</td>
+                </tr>
+                <tr>
+                    <td><strong>Strategy</strong></td>
+                    <td>All 4 agents sequentially</td>
+                    <td>Coder → Tester (adaptive)</td>
+                </tr>
+                <tr>
+                    <td><strong>Redundant Operations</strong></td>
+                    <td>Common</td>
+                    <td>Eliminated</td>
+                </tr>
+            </table>
+
+            <div class="callout-warning callout">
+                <strong>Key Finding:</strong> The learned policy skips planning for simple tasks, going directly to coding and testing. This results in 56% fewer API calls! For complex tasks with errors, it adaptively invokes the Debugger.
+            </div>
+
+            <h2>Technical Implementation Highlights</h2>
+
+            <h3>Simulated Environment for Fast Training</h3>
+
+            <p>Training an RL agent with actual LLM calls would be prohibitively slow and expensive. I created a <strong>simulated environment</strong> that models agent behavior probabilistically:</p>
+
+            <pre>class SimulatedEnvironment:
+    def step(self, action):
+        # Model probabilistic outcomes based on current state
+        if action == CODER and not self.state['has_code']:
+            # 95% chance Coder produces valid code
+            success = random.random() < 0.95
+            self.state['has_code'] = success
+            self.state['has_error'] = random.random() < 0.1
+
+        # Calculate reward and check termination
+        reward = self._calculate_reward(action)
+        done = self._is_terminal()
+        return self.state, reward, done</pre>
+
+            <p>This enabled <strong>~100k training episodes per second</strong> without actual LLM calls, allowing rapid experimentation with reward functions and hyperparameters.</p>
+
+            <h3>Custom Code Complexity Analyzer</h3>
+
+            <p>Built a tool that analyzes generated code for:</p>
+
+            <ul>
+                <li><strong>Cyclomatic Complexity:</strong> Number of independent paths through the code</li>
+                <li><strong>Lines of Code:</strong> Total and effective (non-blank, non-comment)</li>
+                <li><strong>Cognitive Complexity:</strong> How difficult the code is to understand</li>
+            </ul>
+
+            <p>These metrics feed into the UI dashboard and can be used for reward shaping in future iterations.</p>
+
+            <h3>Blackboard Communication Pattern</h3>
+
+            <p>Agents communicate through a shared "blackboard" rather than direct message passing:</p>
+
+            <pre>class Blackboard:
+    def __init__(self):
+        self.plan = None
+        self.code = None
+        self.test_results = None
+        self.errors = []
+        self.history = []
+
+    def post(self, agent_name, content_type, content):
+        self.history.append({
+            'agent': agent_name,
+            'type': content_type,
+            'content': content,
+            'timestamp': time.time()
+        })</pre>
+
+            <p>This decouples agents and makes it easy to add new agents or modify existing ones without changing the orchestration logic.</p>
+
+            <h2>Streamlit UI Features</h2>
+
+            <p>The interactive UI provides full visibility into the system's operation:</p>
+
+            <div class="skill-grid">
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">Task Input</div>
+                        <div class="skill-detail">Natural language task descriptions with example prompts</div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">Agent Activity</div>
+                        <div class="skill-detail">Real time visualization of which agent is active</div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">Code Display</div>
+                        <div class="skill-detail">Syntax highlighted generated code with copy button</div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">Metrics Dashboard</div>
+                        <div class="skill-detail">Steps taken, time elapsed, code complexity</div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">RAG Context</div>
+                        <div class="skill-detail">Inspect retrieved documents used for generation</div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">•</div>
+                    <div class="skill-text">
+                        <div class="skill-category">Agent History</div>
+                        <div class="skill-detail">Full conversation log between agents</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Showcase -->
+            <div class="skills-showcase">
+                <h3>Technologies & Skills Demonstrated</h3>
+                <div class="skill-grid">
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">Reinforcement Learning</div>
+                            <div class="skill-detail">Q-Learning, Thompson Sampling, MDP formulation</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">RAG Systems</div>
+                            <div class="skill-detail">ChromaDB, Sentence Transformers, context injection</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">Multi Agent Systems</div>
+                            <div class="skill-detail">Agent design, blackboard pattern, orchestration</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">Prompt Engineering</div>
+                            <div class="skill-detail">Specialized prompts for each agent role</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">LLM APIs</div>
+                            <div class="skill-detail">OpenRouter integration, model selection</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">•</div>
+                        <div class="skill-text">
+                            <div class="skill-category">Streamlit</div>
+                            <div class="skill-detail">Interactive UI, real time updates, deployment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Lessons Learned</h2>
+
+            <ol>
+                <li><strong>State Design Matters:</strong> The right state representation is crucial for RL to learn meaningful policies. Too few features = can't distinguish situations. Too many = slow learning.</li>
+
+                <li><strong>Simulation Enables Iteration:</strong> Fast simulation allowed rapid experimentation with reward functions and hyperparameters. I could test 50 different configurations in a day.</li>
+
+                <li><strong>RAG Complements Agents:</strong> Even capable LLMs produce better code when given relevant examples. RAG is not just for knowledge retrieval, it also improves output quality.</li>
+
+                <li><strong>Simple Policies Win:</strong> The learned policy was surprisingly simple: skip unnecessary steps. Complex reward engineering often leads to simple emergent behaviors.</li>
+
+                <li><strong>Visualization is Essential:</strong> The Streamlit UI was not just for demo. It was crucial for debugging and understanding system behavior during development.</li>
+            </ol>
+
+            <div class="resources">
+                <h3>Resources & References</h3>
+                <ul>
+                    <li><strong>Professor Nik Brown</strong> at Northeastern University for the Prompt Engineering & AI course</li>
+                    <li><a href="https://www.deeplearning.ai/short-courses/building-evaluating-advanced-rag/" target="_blank">DeepLearning.AI: Building & Evaluating Advanced RAG</a></li>
+                    <li><a href="https://lilianweng.github.io/posts/2023-06-23-agent/" target="_blank">Lilian Weng: LLM Powered Autonomous Agents</a></li>
+                    <li><a href="https://www.cs.mcgill.ca/~dprecup/tutorials/aaai02-Thompson.pdf" target="_blank">Thompson Sampling Tutorial</a></li>
+                    <li><strong>ChromaDB Documentation</strong> for vector store best practices</li>
+                </ul>
+            </div>
+
+            <h2>What's Next</h2>
+
+            <p>Future improvements could include:</p>
+
+            <ul>
+                <li><strong>Richer State Representations:</strong> Use embeddings of code/errors instead of binary features</li>
+                <li><strong>Hierarchical RL:</strong> High-level policy selects sub-goals, low-level policies execute</li>
+                <li><strong>Online Learning:</strong> Adapt the policy based on real user feedback</li>
+                <li><strong>Code Execution Sandbox:</strong> Actually run generated code for true test validation</li>
+                <li><strong>Multi-Language Support:</strong> Extend RAG knowledge base beyond Python</li>
+            </ul>
+
+            <h2>Try It Yourself</h2>
+
+            <p>The project is fully open source and deployed:</p>
+
+            <ul>
+                <li>Complete source code with documentation</li>
+                <li>Pre-trained Q-tables for immediate use</li>
+                <li>Knowledge base for RAG (easily extensible)</li>
+                <li>Streamlit UI deployed on cloud</li>
+            </ul>
+
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="https://github.com/NavishaShetty/RAG-Enhanced-Multi-Agent-Code-Generation-System-Using-RL" target="_blank" class="cta-button">View GitHub Repository</a>
+                <a href="https://rag-enhanced-multi-agent-code-generation-system-using-rl.streamlit.app/" target="_blank" class="cta-button">Try Live Demo</a>
+            </div>
+
+            <h2>Final Thoughts</h2>
+
+            <p>This project demonstrates that <strong>combining RL orchestration with RAG can create more intelligent and efficient AI systems</strong>. The key insight is not just that multiple agents are better than one, but that learning <em>when</em> to use each agent matters as much as having specialized agents.</p>
+
+            <p>The principles extend beyond code generation to any multi-agent coordination problem: customer service pipelines, content creation workflows, or research assistants. Whenever you have specialized components that could work together, RL can learn the optimal coordination strategy.</p>
+
+            <p>Building this system reinforced my belief that the future of AI is not just bigger models, but smarter systems that combine multiple capabilities intelligently. The intersection of RL, RAG, and multi agent architectures is where I see some of the most exciting opportunities in AI engineering.</p>
+
+        </article>
+
+        <div class="nav-links" style="display: flex; justify-content: space-between; padding: 0 40px; margin: 40px 0;">
+            <a href="../../index.html" style="display: inline-block; padding: 10px 20px; background: #6366f1; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">← Back to Portfolio</a>
+            <a href="#top" style="display: inline-block; padding: 10px 20px; background: #6366f1; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">↑ Back to Top</a>
+        </div>
+
+        <footer>
+            <p><strong>Interested in discussing RL, RAG, or multi-agent systems?</strong></p>
+            <p>I'm always excited to talk about AI architectures, orchestration strategies, or lessons learned from building intelligent systems.</p>
+            <p style="margin-top: 30px;">
+                <a href="mailto:shetty.navi@northeastern.edu" class="cta-button">Email Me</a>
+                <a href="https://www.linkedin.com/in/navisha-shetty" target="_blank" class="cta-button">Connect on LinkedIn</a>
+                <a href="https://github.com/NavishaShetty" target="_blank" class="cta-button">GitHub Profile</a>
+            </p>
+            <p style="margin-top: 20px; opacity: 0.7;">© 2025 Navisha Shetty | Built with passion for AI and intelligent systems</p>
+        </footer>
+    </div>
+</body>
+</html>
